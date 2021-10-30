@@ -29,6 +29,7 @@ dist/
 flow-typed
 
 dist/
+
 test/unit/coverage
 .idea
 node*
@@ -37,3 +38,5 @@ ngrok
 firebase-debug.log
 atlassian-connect.json
 .firebase/
+node-*-linux-x64/
+

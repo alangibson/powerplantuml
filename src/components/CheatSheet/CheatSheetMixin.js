@@ -2,12 +2,12 @@ export default {
   props: {
     contents: {
       type: Object,
-      default: null
+      default: null,
     },
     cdn: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   methods: {
     createUrl(img: string): string {

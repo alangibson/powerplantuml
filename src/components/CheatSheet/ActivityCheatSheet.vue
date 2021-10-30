@@ -1,8 +1,6 @@
 <template>
   <div id="ActivityCheatSheet">
-    <div class="h4">
-      Activity
-    </div>
+    <div class="h4">Activity</div>
     <table class="table table-bordered table-hover">
       <tbody>
         <tr>
@@ -40,13 +38,13 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import cheatSheetMixin from './CheatSheetMixin'
 
 export default {
-  name: 'activityCheatSheet',
+  name: 'ActivityCheatSheet',
   mixins: [cheatSheetMixin],
   data(): any {
     return {

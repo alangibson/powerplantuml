@@ -4,7 +4,7 @@
       <div class="alert alert-default" v-if="!histories.length">
         When you press the Save button, it will be added to the history.
       </div>
-      <div class="thumbnail" v-for="(history, key, index) in histories" :key="index">
+      <div class="thumbnail" v-for="history in histories" :key="history.id">
         <img v-lazy="createUrl(history.encodedText)" @click="read(history.text, $event)" height="200" width="100%" />
         <div class="caption">
           <div class="row">
@@ -33,11 +33,11 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 export default {
-  name: 'historyList',
+  name: 'HistoryList',
   props: {
     height: {
       type: String,
@@ -53,6 +53,12 @@ export default {
   computed: {
     histories(): any {
       return this.$store.state.histories.data
+    },
+    style(): any {
+      return {
+        height: this.height,
+        '--color': this.$store.getters['plantumlEditor/themeColor']
+      }
     }
   },
   mounted() {
@@ -85,22 +91,26 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .historyList {
+  --color: #000;
+
   margin-top: -20px;
   padding-top: 20px;
   overflow-y: auto;
-  background-color: #002b36;
-}
-.historyList .thumbnail {
-  background-color: #fffff;
-  border-color: #002b36;
-}
-.historyList img {
-  cursor: pointer;
-  &[lazy='loading'] {
-    background-color: #f5f5f5;
-  }
-  &[lazy='loaded'] {
-    background-color: none;
+  background-color: var(--color);
+
+  .thumbnail {
+    background-color: #ffffff;
+    border-color: var(--color);
+
+    img {
+      cursor: pointer;
+      &[lazy='loading'] {
+        background-color: #f5f5f5;
+      }
+      &[lazy='loaded'] {
+        background-color: unset;
+      }
+    }
   }
 }
 </style>

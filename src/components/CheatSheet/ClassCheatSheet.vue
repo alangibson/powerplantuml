@@ -1,8 +1,6 @@
 <template>
   <div id="ClassCheatSheet">
-    <div class="h4">
-      Class
-    </div>
+    <div class="h4">Class</div>
     <table class="table table-bordered table-hover">
       <tbody>
         <tr>
@@ -44,7 +42,8 @@
         <tr>
           <td>{{ classCheatSheet.abstractkeyword.title }}</td>
           <td>
-            <code v-clipboard>{{ classCheatSheet.abstractkeyword.text }}</code> class
+            <code v-clipboard>{{ classCheatSheet.abstractkeyword.text }}</code>
+            class
           </td>
         </tr>
         <tr>
@@ -70,13 +69,13 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import cheatSheetMixin from './CheatSheetMixin'
 
 export default {
-  name: 'classCheatSheet',
+  name: 'ClassCheatSheet',
   mixins: [cheatSheetMixin],
   data(): any {
     return {

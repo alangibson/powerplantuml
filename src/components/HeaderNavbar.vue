@@ -38,17 +38,31 @@
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button"> <span class="glyphicon glyphicon-info-sign"></span> cheat sheet <b class="caret"></b> </a>
           <ul class="dropdown-menu">
-            <li><a href="#CommonCheatSheet" @click.prevent="changeCheatSheetColSize">Common</a></li>
+            <li>
+              <a href="#CommonCheatSheet" @click.prevent="changeCheatSheetColSize">Common</a>
+            </li>
             <li class="divider"></li>
             <li class="dropdown-header">behavioral diagrams</li>
-            <li><a href="#UseCaseCheatSheet" @click.prevent="changeCheatSheetColSize">Use Case</a></li>
-            <li><a href="#ActivityCheatSheet" @click.prevent="changeCheatSheetColSize">Activity</a></li>
-            <li><a href="#SequenceCheatSheet" @click.prevent="changeCheatSheetColSize">Sequence</a></li>
+            <li>
+              <a href="#UseCaseCheatSheet" @click.prevent="changeCheatSheetColSize">Use Case</a>
+            </li>
+            <li>
+              <a href="#ActivityCheatSheet" @click.prevent="changeCheatSheetColSize">Activity</a>
+            </li>
+            <li>
+              <a href="#SequenceCheatSheet" @click.prevent="changeCheatSheetColSize">Sequence</a>
+            </li>
             <li class="divider"></li>
             <li class="dropdown-header">structural diagrams</li>
-            <li><a href="#ObjectCheatSheet" @click.prevent="changeCheatSheetColSize">Object</a></li>
-            <li><a href="#ClassCheatSheet" @click.prevent="changeCheatSheetColSize">Class</a></li>
-            <li><a href="#ERCheatSheet" @click.prevent="changeCheatSheetColSize">ER diagram</a></li>
+            <li>
+              <a href="#ObjectCheatSheet" @click.prevent="changeCheatSheetColSize">Object</a>
+            </li>
+            <li>
+              <a href="#ClassCheatSheet" @click.prevent="changeCheatSheetColSize">Class</a>
+            </li>
+            <li>
+              <a href="#ERCheatSheet" @click.prevent="changeCheatSheetColSize">ER diagram</a>
+            </li>
           </ul>
         </li>
       </ul>
@@ -92,14 +106,14 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import UmlTemplate from './UmlTemplate'
 import Github from './GithubModal'
 
 export default {
-  name: 'headerNavbar',
+  name: 'HeaderNavbar',
   components: {
     UmlTemplate,
     Github
@@ -166,6 +180,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<<<<<<< HEAD
 <style scoped>
 .navbar-inverse {
   background-color: rgb(44, 44, 44);
@@ -188,3 +203,6 @@ a.dropdown-toggle {
   color: #ffffec;
 }
 </style>
+=======
+<style scoped></style>
+>>>>>>> master

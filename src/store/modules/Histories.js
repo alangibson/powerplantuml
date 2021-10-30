@@ -10,7 +10,7 @@ var db = new Dexie('PlantumlEditor')
 const state: any = {
   schemes: ['++id,text,src,created', '++id,text,encodedText,created'],
   versions: [1, 2],
-  data: []
+  data: [],
 }
 
 const mutations: any = {
@@ -19,7 +19,7 @@ const mutations: any = {
     // Version 2
     db.version(state.versions[1])
       .stores({
-        plantuml: state.schemes[1]
+        plantuml: state.schemes[1],
       })
       .upgrade(() => {
         state.db.plantuml.toCollection().modify((history: any) => {
@@ -27,51 +27,47 @@ const mutations: any = {
         })
       })
     // バージョン 1
-    // Version 1
-    db.version(state.versions[0]).stores({
-      plantuml: state.schemes[0]
+    state.db.version(state.versions[0]).stores({
+      plantuml: state.schemes[0],
     })
   },
-  getHistories(state: any) {
-    db.plantuml
-      .reverse()
-      .toArray()
-      .then(function(data: any[]) {
-        state.data = data
-      })
+  setHistories(state: any, data: any[]) {
+    state.data = data || []
   },
   save(state: any, { text, encodedText }: any) {
     db.plantuml.add({
       text: text,
       encodedText: encodedText,
-      created: new Date().toLocaleString()
+      created: new Date().toLocaleString(),
     })
   },
   delete(state: any, id: number) {
-    db.plantuml.delete(id)
-  }
+    state.db.plantuml.delete(id)
+  },
 }
 
 const actions: any = {
   defineScheme(context: any) {
     context.commit('defineScheme')
   },
-  getHistories(context: any) {
-    context.commit('getHistories')
+  async getHistories(context: any): any {
+    const data: any[] = await state.db.plantuml.reverse().toArray().then()
+    context.commit('setHistories', data)
+    return data
   },
   save(context: any, { text, encodedText }: any) {
     context.commit('save', { text, encodedText })
-    context.commit('getHistories')
+    context.dispatch('getHistories')
   },
   delete(context: any, id: number) {
     context.commit('delete', id)
-    context.commit('getHistories')
-  }
+    context.dispatch('getHistories')
+  },
 }
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 }

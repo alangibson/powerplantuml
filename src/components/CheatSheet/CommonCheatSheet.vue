@@ -1,8 +1,6 @@
 <template>
   <div id="CommonCheatSheet">
-    <div class="h4">
-      Common
-    </div>
+    <div class="h4">Common</div>
     <table class="table table-bordered table-hover">
       <tbody>
         <tr>
@@ -214,13 +212,13 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import cheatSheetMixin from './CheatSheetMixin'
 
 export default {
-  name: 'commonCheatSheet',
+  name: 'CommonCheatSheet',
   mixins: [cheatSheetMixin],
   data(): any {
     return {

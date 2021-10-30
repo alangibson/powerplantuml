@@ -62,17 +62,15 @@ cat atlassian-connect.tmpl.json | envsubst > atlassian-connect.json
 ```bash
 
 # install dependencies
-npm install
+npm install --also=dev
 
-# install flow-typed
-npm install flow-typed
-flow-typed install
+npm run flow-typed
 
 # build for production with minification
 npm run build
 
 # run unit tests
-npm run test
+npm run test:unit
 
 # run e2e tests
 npm run e2e
@@ -263,7 +261,12 @@ apt install certbot python3-certbot-nginx
 certbot --nginx -d powerplantuml.com -d render.powerplantuml.com
 systemctl status certbot.timer
 certbot renew --dry-run
+
 ```
+docker run -d -p 4000:8080 plantuml/plantuml-server:jetty
+```
+
+> **Notice:** The specification of the port number follows `.env.development`
 
 ## Other
 

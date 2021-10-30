@@ -3,34 +3,52 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
           <div class="h3 modal-title">Options</div>
         </div>
         <div class="modal-body">
           <form class="form-horizontal">
             <div class="form-group">
-              <label class="col-sm-4 control-label">keymap</label>
-              <div class="col-sm-8">
-                <label class="radio-inline"> <input type="radio" name="keymap" v-model="keymap" value="sublime" /> sublime </label>
-                <label class="radio-inline"> <input type="radio" name="keymap" v-model="keymap" value="vim" /> vim </label>
-                <label class="radio-inline"> <input type="radio" name="keymap" v-model="keymap" value="emacs" /> emacs </label>
+              <label class="col-sm-2 control-label">keymap</label>
+              <div class="col-sm-10">
+                <label class="radio-inline">
+                  <input type="radio" name="keymap" v-model="keymap" value="sublime" />
+                  sublime
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="keymap" v-model="keymap" value="vim" />
+                  vim
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="keymap" v-model="keymap" value="emacs" />
+                  emacs
+                </label>
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-4 control-label">indent</label>
-              <div class="col-sm-8">
-                <label class="radio-inline"> <input type="radio" name="indent" v-model="indent" value="space2" /> space 2 </label>
-                <label class="radio-inline"> <input type="radio" name="indent" v-model="indent" value="space4" /> space 4 </label>
-                <label class="radio-inline"> <input type="radio" name="indent" v-model="indent" value="tab" /> tab </label>
+              <label class="col-sm-2 control-label">indent</label>
+              <div class="col-sm-10">
+                <label class="radio-inline">
+                  <input type="radio" name="indent" v-model="indent" value="space2" />
+                  space 2
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="indent" v-model="indent" value="space4" />
+                  space 4
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="indent" v-model="indent" value="tab" />
+                  tab
+                </label>
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-4 control-label" for="codeMirrorTheme">editor theme&nbsp;</label>
-              <div class="col-sm-8">
-                <select id="codeMirrorTheme" v-model="codeMirrorTheme" class="form-control">
-                  <option v-for="(option, index) in codeMirrorThemes" :value="option" :key="index">
-                    {{ option }}
-                  </option>
+              <label class="col-sm-2 control-label">theme</label>
+              <div class="col-sm-10">
+                <select class="form-control theme" v-model="theme">
+                  <option v-for="themeVal in themes" :key="themeVal.name" :value="themeVal.name">{{ themeVal.name }}</option>
                 </select>
               </div>
             </div>
@@ -50,7 +68,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 export default {
@@ -80,7 +98,8 @@ export default {
         this.$store.dispatch('plantumlEditor/setCDN', value)
       }
     },
-    codeMirrorTheme: {
+    
+    theme: {
       get(): string {
         return this.$store.state.plantumlEditor.codemirrorOptions.theme
       },
@@ -88,69 +107,19 @@ export default {
         this.$store.dispatch('plantumlEditor/syncCodeMirrorTheme', value)
       }
     },
-    codeMirrorThemes(): any {
-      // Best: monokai, lucario, mbo, railscast, seti, ttcn,
-      return [
-        'default',
-        '3024-day',
-        '3024-night',
-        'abcdef',
-        'ambiance',
-        'ambiance-mobile',
-        'base16-dark',
-        'base16-light',
-        'bespin',
-        'blackboard',
-        'cobalt',
-        'colorforth',
-        'dracula',
-        'duotone-dark',
-        'duotone-light',
-        'eclipse',
-        'elegant',
-        'erlang-dark',
-        'gruvbox-dark',
-        'hopscotch',
-        'icecoder',
-        'idea',
-        'isotope',
-        'lesser-dark',
-        'liquibyte',
-        'lucario',
-        'material',
-        'mbo',
-        'mdn-like',
-        'midnight',
-        'monokai',
-        'neat',
-        'neo',
-        'night',
-        'oceanic-next',
-        'panda-syntax',
-        'paraiso-dark',
-        'paraiso-light',
-        'pastel-on-dark',
-        'railscasts',
-        'rubyblue',
-        'seti',
-        'shadowfox',
-        'solarized',
-        'ssms',
-        'the-matrix',
-        'tomorrow-night-bright',
-        'tomorrow-night-eighties',
-        'ttcn',
-        'twilight',
-        'vibrant-ink',
-        'xq-dark',
-        'xq-light',
-        'yeti',
-        'zenburn'
-      ]
-    }
+
+    themes(): { name: string; color: string } {
+      return this.$store.state.plantumlEditor.themes
+    },
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style lang="scss" scoped>
+#options {
+  .theme {
+    width: 220px;
+  }
+}
+</style>

@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 // components
@@ -29,6 +29,14 @@ export default {
   components: {
     Parameters
   },
+  data(): any {
+    return {
+      winKey: this.$store.state.plantumlEditor.renderUMLKey.win,
+      macKey: this.$store.state.plantumlEditor.renderUMLKey.mac,
+      snippetWinKey: this.$store.state.plantumlEditor.snippetKey.win,
+      snippetMacKey: this.$store.state.plantumlEditor.snippetKey.mac
+    }
+  },
   computed: {
     showHTTPSWarning(): boolean {
       return !this.$store.state.plantumlEditor.isHTTPS && this.$store.state.plantumlEditor.showHTTPSWarning
@@ -38,14 +46,9 @@ export default {
     },
     url(): string {
       return this.$store.state.plantumlEditor.url
-    }
-  },
-  data(): any {
-    return {
-      winKey: this.$store.state.plantumlEditor.renderUMLKey.win,
-      macKey: this.$store.state.plantumlEditor.renderUMLKey.mac,
-      snippetWinKey: this.$store.state.plantumlEditor.snippetKey.win,
-      snippetMacKey: this.$store.state.plantumlEditor.snippetKey.mac
+    },
+    isHTTPS(): boolean {
+      return this.$store.state.plantumlEditor.isHTTPS
     }
   },
   methods: {

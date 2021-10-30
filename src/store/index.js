@@ -15,7 +15,9 @@ import gistApi from './modules/GistApi'
 import github from './modules/Github'
 import confluence from './modules/Confluence'
 
-export default new Vuex.Store({
+// https://flow.org/en/docs/lang/types-first/
+export default (new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   modules: {
     plantumlEditor,
     layout,
@@ -27,4 +29,4 @@ export default new Vuex.Store({
     confluence
   },
   plugins: [createPersistedState()]
-})
+}))

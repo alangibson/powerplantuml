@@ -4,19 +4,19 @@ import plantumlEncoder from 'plantuml-encoder-decoder'
 import axios from 'axios'
 import lodash from 'lodash'
 import marked from 'marked'
+import DOMPurify from 'dompurify'
 const _: any = lodash
 
 const state: any = {
   isHTTPS: location.protocol === 'https:',
   FPS: Math.floor((1000 / 30) * 10), // FPS 30
-  url: 'https://plantuml-editor.kkeisuke.com/',
+  url: process.env.VUE_APP_URL || 'https://powerplantuml.com/',
   official: 'http://plantuml.com/',
   plantuml: 'plantuml',
-  language: 'plantuml', // plantuml or mermaid
-  server: 'https://plantuml-server.herokuapp.com/',
-  cdn: 'https://plantuml-server.kkeisuke.app/',
-  startuml: '@startuml',
-  enduml: '@enduml',
+  server: process.env.VUE_APP_SERVER || 'https://render.powerplantuml.com/',
+  cdn: process.env.VUE_APP_CDN || 'https://render.powerplantuml.com/',
+  startuml: ['@startuml', '@startmindmap', '@startditaa', '@startgantt', '@startwbs'],
+  enduml: ['@enduml', '@endmindmap', '@endditaa', '@endgantt', '@endwbs'],
   defaultText:
     '# PlantUML Editor\n\n1. select template\n2. write uml diagram\n\n@startuml\n\nleft to right direction\n\nactor User\n\nUser --> (1. select template)\nUser --> (2. write uml diagram)\n\n@enduml',
   text: '',
@@ -26,14 +26,115 @@ const state: any = {
   afterMarkdown: '',
   codemirrorOptions: {
     mode: 'plantuml',
-    theme: 'mbo',
+    theme: '',
     indentUnit: 2,
     tabSize: 2,
     indentWithTabs: false,
     lineNumbers: true,
     styleActiveLine: true,
-    keyMap: ''
+    keyMap: '',
+    foldGutter: true,
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
   },
+  themes: [
+    {
+      name: 'base16-dark',
+      color: '#151515',
+    },
+    {
+      name: 'hopscotch',
+      color: '#322931',
+    },
+    {
+      name: 'material',
+      color: '#263238',
+    },
+    {
+      name: 'mbo',
+      color: '#2c2c2c',
+    },
+    {
+      name: 'paraiso-dark',
+      color: '#2f1e2e',
+    },
+    {
+      name: 'railscasts',
+      color: '#2b2b2b',
+    },
+    {
+      name: 'seti',
+      color: '#151718',
+    },
+    {
+      name: 'shadowfox',
+      color: '#2a2a2e',
+    },
+    {
+      name: 'solarized dark',
+      color: '#002b36',
+    },
+    {
+      name: 'tomorrow-night-eighties',
+      color: '#000000',
+    },
+    // TODO Make sure they are all available
+    // 'default',
+    // '3024-day',
+    // '3024-night',
+    // 'abcdef',
+    // 'ambiance',
+    // 'ambiance-mobile',
+    // 'base16-dark',
+    // 'base16-light',
+    // 'bespin',
+    // 'blackboard',
+    // 'cobalt',
+    // 'colorforth',
+    // 'dracula',
+    // 'duotone-dark',
+    // 'duotone-light',
+    // 'eclipse',
+    // 'elegant',
+    // 'erlang-dark',
+    // 'gruvbox-dark',
+    // 'hopscotch',
+    // 'icecoder',
+    // 'idea',
+    // 'isotope',
+    // 'lesser-dark',
+    // 'liquibyte',
+    // 'lucario',
+    // 'material',
+    // 'mbo',
+    // 'mdn-like',
+    // 'midnight',
+    // 'monokai',
+    // 'neat',
+    // 'neo',
+    // 'night',
+    // 'oceanic-next',
+    // 'panda-syntax',
+    // 'paraiso-dark',
+    // 'paraiso-light',
+    // 'pastel-on-dark',
+    // 'railscasts',
+    // 'rubyblue',
+    // 'seti',
+    // 'shadowfox',
+    // 'solarized',
+    // 'ssms',
+    // 'the-matrix',
+    // 'tomorrow-night-bright',
+    // 'tomorrow-night-eighties',
+    // 'ttcn',
+    // 'twilight',
+    // 'vibrant-ink',
+    // 'xq-dark',
+    // 'xq-light',
+    // 'yeti',
+    // 'zenburn'
+  ],
+  defaultTheme: 'solarized dark',
   defaultKeyMap: 'sublime',
   defaultIndent: 'space2',
   codemirrorIndent: 'space2',
@@ -44,19 +145,19 @@ const state: any = {
       text: 'svg',
       value: 'svg',
       fileType: 'image/svg+xml',
-      responseType: 'text'
+      responseType: 'text',
     },
     {
       text: 'png',
       value: 'png',
       fileType: 'image/png',
-      responseType: 'arraybuffer'
-    }
+      responseType: 'arraybuffer',
+    },
   ],
   isLoading: false,
   renderUMLKey: {
     win: 'Ctrl-Enter',
-    mac: 'Cmd-Enter'
+    mac: 'Cmd-Enter',
   },
   snippetKey: {
     win: 'Ctrl-E',
@@ -87,7 +188,13 @@ const getters: any = {
   },
   isTab(state: any): boolean {
     return state.codemirrorIndent === 'tab'
-  }
+  },
+  themeColor(state: any): string {
+    const current: any = state.themes.find((theme: any): boolean => {
+      return theme.name === state.codemirrorOptions.theme
+    })
+    return current.color
+  },
 }
 
 const mutations: any = {
@@ -140,9 +247,15 @@ const mutations: any = {
     state.cdn = cdn
   },
   renderUML(state: any, text: string) {
-    const uml: string = `${state.startuml}${String(text.split(state.startuml)[1]).split(state.enduml)[0] || ''}${state.enduml}`
-    state.encodedText = plantumlEncoder.encode(uml)
-    state.src = `${state.cdn}${state.umlExtension}/${state.encodedText}.${state.umlExtension}`
+    const start: string = findKey(state.startuml, text)
+    const end: string = findKey(state.enduml, text)
+
+    if (start && end) {
+      const uml: string = `${start}${String(text.split(start)[1]).split(end)[0] || ''}${end}`
+      state.encodedText = plantumlEncoder.encode(uml)
+      state.src = `${state.cdn}${state.umlExtension}/${state.encodedText}.${state.umlExtension}`
+    }
+
   },
   resetUML(state: any) {
     const uml = `${state.startuml}${state.enduml}`
@@ -151,10 +264,15 @@ const mutations: any = {
     state.src = `${state.cdn}${state.umlExtension}/${state.encodedText}.${state.umlExtension}`
   },
   renderMarkdown(state: any, text: string) {
-    const pre: string = text.split(state.startuml)[0] || ''
-    const after: string = text.split(state.enduml)[1] || ''
-    state.preMarkdown = marked(pre)
-    state.afterMarkdown = marked(after)
+    const start: string = findKey(state.startuml, text)
+    const end: string = findKey(state.enduml, text)
+
+    if (start && end) {
+      const pre: string = text.split(start)[0] || ''
+      const after: string = text.split(end)[1] || ''
+      state.preMarkdown = DOMPurify.sanitize(marked(pre))
+      state.afterMarkdown = DOMPurify.sanitize(marked(after))
+    }
   },
   setLocalStrage(state: any, text: string) {
     if (window.localStorage) {
@@ -175,6 +293,11 @@ const mutations: any = {
       window.localStorage.setItem('codemirrorIndent', indent)
     }
   },
+  setThemeLocalStrage(state: any, theme: string) {
+    if (window.localStorage) {
+      window.localStorage.setItem('codemirrorOptions.theme', theme)
+    }
+  },
   getKeyMapFromLocalStrage(state: any) {
     const keyMap: string = window.localStorage ? window.localStorage.getItem('codemirrorOptions.keyMap') : ''
     state.codemirrorOptions.keyMap = keyMap || state.defaultKeyMap
@@ -182,6 +305,10 @@ const mutations: any = {
   getIndentFromLocalStrage(state: any) {
     const indent: string = window.localStorage ? window.localStorage.getItem('codemirrorIndent') : ''
     state.codemirrorIndent = indent || state.defaultIndent
+  },
+  getThemeFromLocalStrage(state: any) {
+    const theme: string = window.localStorage ? window.localStorage.getItem('codemirrorOptions.theme') : ''
+    state.codemirrorOptions.theme = theme || state.defaultTheme
   },
   setIsLoading(state: any, isLoading: boolean) {
     state.isLoading = isLoading
@@ -197,6 +324,17 @@ const mutations: any = {
   }
 }
 
+function findKey(keys: string[], text: string): string {
+  let result: string = ''
+  keys.some((key: string): boolean => {
+    if (text.includes(key)) {
+      result = key
+    }
+    return Boolean(result)
+  })
+  return result
+}
+
 const actions: any = {
   syncCodeMirrorKeyMap(context: any, keyMap: string) {
     context.commit('setCodeMirrorKeyMap', keyMap)
@@ -208,6 +346,7 @@ const actions: any = {
   },
   syncCodeMirrorTheme(context: any, theme: string) {
     context.commit('setCodeMirrorTheme', theme)
+    context.commit('setThemeLocalStrage', theme)
   },
   setUmlWidth(context: any, umlWidth: number) {
     context.commit('setUmlWidth', umlWidth)
@@ -227,6 +366,7 @@ const actions: any = {
     context.commit('getUmlWidthFromLocalStorage')
     context.commit('getKeyMapFromLocalStrage')
     context.commit('getIndentFromLocalStrage')
+    context.commit('getThemeFromLocalStrage')
     context.dispatch('syncCodeMirrorIndent', state.codemirrorIndent)
   },
   syncText(context: any, text: string) {
@@ -235,7 +375,7 @@ const actions: any = {
   },
   setMarked() {
     const renderer: any = new marked.Renderer()
-    renderer.table = function(header: string, body: string): string {
+    renderer.table = function (header: string, body: string): string {
       return `<table class="table table-striped table-bordered"><thead>${header}</thead><tbody>${body}</tbody></table>`
     }
     marked.setOptions({ renderer: renderer })
@@ -257,7 +397,7 @@ const actions: any = {
     const ext: any = _.find(state.umlExtensions, { text: state.umlExtension })
     axios
       .get(state.src || '', {
-        responseType: ext.responseType
+        responseType: ext.responseType,
       })
       .then((response: any) => {
         if (response && response.data) {
@@ -265,10 +405,16 @@ const actions: any = {
           downLoadLink.download = `${state.plantuml}.${state.umlExtension}`
           downLoadLink.href = URL.createObjectURL(new Blob([response.data], { type: ext.fileType }))
           downLoadLink.dataset.downloadurl = `${ext.fileType}:${downLoadLink.download}:${downLoadLink.href}`
+          if (document.body) {
+            document.body.appendChild(downLoadLink) // for firefox
+          }
           downLoadLink.click()
+          if (document.body) {
+            document.body.removeChild(downLoadLink) // for firefox
+          }
         }
       })
-  }
+  },
 }
 
 export default {
@@ -276,5 +422,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 }

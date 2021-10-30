@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import CodeMirror from 'codemirror/lib/codemirror.js'
@@ -14,6 +14,9 @@ import 'codemirror/keymap/vim.js'
 import 'codemirror/keymap/emacs.js'
 import 'codemirror/addon/selection/active-line.js'
 import 'codemirror/addon/hint/show-hint.js'
+import 'codemirror/addon/comment/comment.js'
+import 'codemirror/addon/fold/foldgutter.js'
+import 'codemirror/addon/fold/indent-fold.js'
 import '../lib/codemirror/mode/plantuml/plantuml.js'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/3024-day.css'
@@ -70,19 +73,40 @@ import 'codemirror/theme/xq-dark.css'
 import 'codemirror/theme/xq-light.css'
 import 'codemirror/theme/yeti.css'
 import 'codemirror/theme/zenburn.css'
+
+// theme
+import 'codemirror/theme/base16-dark.css'
+import 'codemirror/theme/hopscotch.css'
+import 'codemirror/theme/material.css'
+import 'codemirror/theme/mbo.css'
+import 'codemirror/theme/paraiso-dark.css'
+import 'codemirror/theme/railscasts.css'
+import 'codemirror/theme/seti.css'
+import 'codemirror/theme/shadowfox.css'
+import 'codemirror/theme/solarized.css'
+import 'codemirror/theme/tomorrow-night-eighties.css'
+
+// addon
 import 'codemirror/addon/hint/show-hint.css'
+import 'codemirror/addon/fold/foldgutter.css'
 
 var renderTimer
 
 export default {
+  name: 'Editor',
   components: {
     codemirror
   },
-  name: 'editor',
   props: {
     height: {
       type: String,
       default: '100%'
+    }
+  },
+  data(): any {
+    return {
+      codemirror: null,
+      snippets: this.$store.getters['cheatSheet/snippets']
     }
   },
   computed: {
@@ -91,12 +115,6 @@ export default {
     },
     options(): any {
       return this.$store.state.plantumlEditor.codemirrorOptions
-    }
-  },
-  data(): any {
-    return {
-      codemirror: null,
-      snippets: this.$store.getters['cheatSheet/snippets']
     }
   },
   methods: {
@@ -130,9 +148,11 @@ export default {
           const line: number = cursor.line
           const currentWord: string = token.string
 
-          const list: any[] = snippets.filter((item: any): boolean => {
-            return item.text.indexOf(currentWord) >= 0
-          })
+          const list: any[] = snippets.filter(
+            (item: any): boolean => {
+              return item.text.indexOf(currentWord) >= 0
+            }
+          )
 
           return {
             list: list.length ? list : snippets,

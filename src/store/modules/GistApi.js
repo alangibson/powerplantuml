@@ -10,7 +10,7 @@ const state: any = {
   gist: {
     description: '',
     public: true, // default
-    files: {}
+    files: {},
   },
   validation: {
     fileName: {
@@ -19,13 +19,13 @@ const state: any = {
       },
       validate(value: string): boolean {
         return !/^.*[(\s|\\|/|'|"|?|<|>|:|*)].*$/.test(value)
-      }
-    }
+      },
+    },
   },
   ext: {
     txt: 'plantuml',
-    svg: 'svg'
-  }
+    svg: 'svg',
+  },
 }
 
 const mutations: any = {
@@ -38,7 +38,7 @@ const mutations: any = {
   addFiles(state: any, data: any) {
     if (data && data.fileName && data.text && data.ext) {
       state.gist.files[`${data.fileName}.${data.ext}`] = {
-        content: data.text
+        content: data.text,
       }
     }
   },
@@ -60,7 +60,7 @@ const mutations: any = {
   resetResponse() {
     state.gistUrl = ''
     state.errorMsg = ''
-  }
+  },
 }
 
 const actions: any = {
@@ -124,12 +124,12 @@ const actions: any = {
     commit('setPublic', true)
     commit('resetFiles')
     commit('resetResponse')
-  }
+  },
 }
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 }

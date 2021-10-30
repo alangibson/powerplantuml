@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import CommonCheatSheet from './CheatSheet/CommonCheatSheet'
@@ -24,7 +24,7 @@ import ClassCheatSheet from './CheatSheet/ClassCheatSheet'
 import ErCheatSheet from './CheatSheet/ERCheatSheet'
 
 export default {
-  name: 'cheatSheet',
+  name: 'CheatSheet',
   components: {
     CommonCheatSheet,
     UseCaseCheatSheet,

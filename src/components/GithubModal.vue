@@ -17,7 +17,7 @@
                     {{ repo.full_name }}
                   </a>
                   <ul v-if="repo.name === $store.state.github.repositoryName">
-                    <li v-for="branch in $store.state.github.branches">
+                    <li v-for="(branch, index) in $store.state.github.branches" :key="index">
                       <a @click.stop="setBranch(branch)">{{ branch.name }}</a>
                     </li>
                   </ul>

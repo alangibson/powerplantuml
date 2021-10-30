@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 // Bootstrap
@@ -16,7 +16,7 @@ import directive from './directive'
 import router from './routes'
 
 export default {
-  name: 'app',
+  name: 'App',
   store,
   directive,
   router

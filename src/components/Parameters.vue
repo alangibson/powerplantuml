@@ -2,12 +2,13 @@
   <form class="form-inline">
     <div class="form-group">
       <label for="umlWidth">width</label>
-      <input type="number" id="umlWidth" style="width: 10ch" step="10" max="300" min="10" v-model="umlWidth" class="form-control" />
+      <input type="number" id="umlWidth" step="10" max="300" min="10" style="width: 70px" v-model="umlWidth" class="form-control" :disabled="!isSvg" />
       %
     </div>
     <div class="form-group">
+      <label for="umlExtension">img</label>
       <select id="umlExtension" v-model="umlExtension" class="form-control">
-        <option v-for="(option, key, index) in umlExtensions" :value="option.value" :key="index">
+        <option v-for="option in umlExtensions" :value="option.value" :key="option.value">
           {{ option.text }}
         </option>
       </select>
@@ -41,14 +42,12 @@
           <div slot="popover-content" class="row">
             <div class="col-sm-12">
               <div class="input-group">
-                <input type="text" class="form-control" v-model="src" v-clipboard readonly style="width:auto;" />
+                <input type="text" class="form-control" v-model="src" v-clipboard readonly style="width: auto" />
                 <span class="input-group-btn">
                   <a :href="src" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a>
                 </span>
               </div>
-              <span class="help-block">
-                if click, copy to clipbord .
-              </span>
+              <span class="help-block"> if click, copy to clipbord . </span>
             </div>
           </div>
         </popover-btn>
@@ -72,14 +71,14 @@
   </form>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import PopoverBtn from './common/PopoverBtn'
 import printjs from 'print-js'
 
 export default {
-  name: 'parameters',
+  name: 'Parameters',
   components: {
     PopoverBtn
   },
@@ -141,8 +140,16 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.form-inline .form-group {
-  margin-right: 10px;
+<style lang="scss" scoped>
+.form-inline {
+  .form-group {
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0;
+    }
+    label {
+      margin-right: 3px;
+    }
+  }
 }
 </style>

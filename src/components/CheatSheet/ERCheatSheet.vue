@@ -1,8 +1,6 @@
 <template>
   <div id="ERCheatSheet">
-    <div class="h4">
-      ER diagram
-    </div>
+    <div class="h4">ER diagram</div>
     <table class="table table-bordered table-hover">
       <tbody>
         <tr>
@@ -52,13 +50,13 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import cheatSheetMixin from './CheatSheetMixin'
 
 export default {
-  name: 'erCheatSheet',
+  name: 'ErCheatSheet',
   mixins: [cheatSheetMixin],
   data(): any {
     return {

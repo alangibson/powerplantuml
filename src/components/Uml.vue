@@ -1,34 +1,41 @@
 <template>
   <div class="row">
     <div class="col-sm-12">
-      <div id="umlArea" class="dragscroll umlImage" :style="{ height: height }">
+      <div id="umlArea" class="umlImage" :style="{ height: height }">
         <div v-html="preMarkdown"></div>
-
-        <!--
-          Not making a difference between png and svg due to chrome (?) bug
-          that requests svg in infinite loop due to a.style.cssText undefined
-        -->
-        <!--<img :src="src" @load="loadedImg" v-if="!isSvg && hasSrc" :width="umlWidth"/>-->
-        <!--<object :data="src" @load="loadedImg" v-else-if="isSvg && hasSrc" :width="umlWidth"></object>-->
-        <img :src="src" @load="loadedImg" :width="umlWidth" />
-
+        <div class="text-center" align="center">
+          <p>
+            <img :src="src" @load="loadedImg" v-if="!isSvg" />
+            <UmlSvg :src="src" :size="`${umlWidth}%`" @load="loadedImg" v-if="isSvg" />
+          </p>
+        </div>
         <div v-html="afterMarkdown"></div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
+import UmlSvg from './UmlSvg'
 
 import 'dragscroll'
 
 export default {
-  name: 'uml',
+  name: 'Uml',
+  components: {
+    UmlSvg
+  },
   props: {
     height: {
       type: String,
       default: '100%'
+    }
+  },
+  data(): any {
+    return {
+      loadingDelay: 500,
+      drag: true
     }
   },
   computed: {
@@ -55,22 +62,16 @@ export default {
       }
     }
   },
-  data(): any {
-    return {
-      loadingDelay: 500,
-      drag: true
-    }
-  },
-  created() {
-    this.$store.dispatch('plantumlEditor/setMarked')
-    this.$store.dispatch('plantumlEditor/setIsLoading', true)
-  },
   watch: {
     src() {
       if (this.src) {
         this.$store.dispatch('plantumlEditor/setIsLoading', true)
       }
     }
+  },
+  created() {
+    this.$store.dispatch('plantumlEditor/setMarked')
+    this.$store.dispatch('plantumlEditor/setIsLoading', true)
   },
   methods: {
     loadedImg() {

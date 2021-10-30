@@ -1,8 +1,6 @@
 <template>
   <div id="ObjectCheatSheet">
-    <div class="h4">
-      Object
-    </div>
+    <div class="h4">Object</div>
     <table class="table table-bordered table-hover">
       <tbody>
         <tr>
@@ -34,13 +32,13 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 import cheatSheetMixin from './CheatSheetMixin'
 
 export default {
-  name: 'objectCheatSheet',
+  name: 'ObjectCheatSheet',
   mixins: [cheatSheetMixin],
   data(): any {
     return {

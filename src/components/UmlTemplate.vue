@@ -18,11 +18,11 @@
   </ul>
 </template>
 
-<script>
+<script lang="js">
 /* @flow */
 
 export default {
-  name: 'umlTemplate',
+  name: 'UmlTemplate',
   data(): any {
     return {
       selectMessage: 'Do you want to select a template?'

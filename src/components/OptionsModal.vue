@@ -52,6 +52,29 @@
                 </select>
               </div>
             </div>
+
+            <!-- <div class="form-group">
+              <label class="col-sm-2 control-label">width</label>
+              <div class="col-sm-5">
+                <label class="radio-inline">
+                  history <input name="indent" v-model="historyCol" /> cols
+                </label>
+                <label class="radio-inline">
+                  cheatsheet <input name="indent" v-model="cheatSheetCol" /> cols
+                </label>
+                <label class="radio-inline">
+                  editor
+                  <input name="indent" v-model="editorCol" />
+                  cols
+                </label>
+                <label class="radio-inline">
+                  diagram
+                  <input name="indent" v-model="umlCol" />
+                  cols
+                </label>
+              </div>
+            </div> -->
+
             <div class="form-group">
               <label class="col-sm-4 control-label">PlantUML server</label>
               <div class="col-sm-8">
@@ -98,7 +121,18 @@ export default {
         this.$store.dispatch('plantumlEditor/setCDN', value)
       }
     },
-    
+    // historyCol(): number {
+    //   return this.$store.state.layout.colSize.history
+    // },
+    // editorCol(): number {
+    //   return this.$store.state.layout.colSize.editor
+    // },
+    // cheatSheetCol(): number {
+    //   return this.$store.state.layout.colSize.cheatSheet
+    // },
+    // umlCol(): number {
+    //   return this.$store.state.layout.colSize.uml
+    // },
     theme: {
       get(): string {
         return this.$store.state.plantumlEditor.codemirrorOptions.theme

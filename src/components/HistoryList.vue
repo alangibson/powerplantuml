@@ -46,8 +46,8 @@ export default {
   },
   data(): any {
     return {
-      deleteMessage: 'Can I delete it?',
-      editMessage: 'Do you want to edit it?'
+      deleteMessage: 'Remove from history?',
+      editMessage: 'Do you want to edit?'
     }
   },
   computed: {

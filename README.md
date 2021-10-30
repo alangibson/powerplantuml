@@ -89,12 +89,14 @@ npm run firebase deploy
 #   Error: ENOSPC: System limit for number of file watchers reached
 # echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
-# serve with hot reload at localhost:8080
-npm run serve
-
-# Run with ngrok
-npm run dev
+# Run ngrok
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+unzip ngrok-stable-linux-amd64.zip
 ./ngrok http --host-header=rewrite 8080 
+
+# serve with hot reload at localhost:8080
+npm run dev
+
 ```
 
 ## Renderer

@@ -10,7 +10,7 @@
       </ul>
 
       <div class="navbar-header">
-        <a class="navbar-brand" href="#" @click.prevent>PlantUML Editor <span class="h6">beta</span></a>
+        <a class="navbar-brand" href="#" @click.prevent>PowerPlantUML</a>
       </div>
 
       <umlTemplate></umlTemplate>
@@ -88,20 +88,6 @@
           <a class="nav-link" @click.prevent="saveConfluence">Save</a>
         </li>
       </ul>
-
-      <div v-if="!enableConfluence" class="navbar-header navbar-right">
-        <ul class="navbar-text list-inline">
-          <li>
-            <a href="https://github.com/kkeisuke/plantuml-editor" class="navbar-link" target="_blank"><i class="fa fa-github fa-lg"></i></a>
-          </li>
-          <li>
-            <a href="https://twitter.com/kkeisuke" class="navbar-link" target="_blank"><i class="fa fa-twitter fa-lg"></i></a>
-          </li>
-          <li>
-            <a href="http://kkeisuke.com/" class="navbar-link" target="_blank"><i class="fa fa-home fa-lg"></i></a>
-          </li>
-        </ul>
-      </div>
     </div>
   </div>
 </template>

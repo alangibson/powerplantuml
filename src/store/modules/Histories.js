@@ -27,7 +27,7 @@ const mutations: any = {
         })
       })
     // バージョン 1
-    state.db.version(state.versions[0]).stores({
+    db.version(state.versions[0]).stores({
       plantuml: state.schemes[0],
     })
   },
@@ -42,7 +42,7 @@ const mutations: any = {
     })
   },
   delete(state: any, id: number) {
-    state.db.plantuml.delete(id)
+    db.plantuml.delete(id)
   },
 }
 
@@ -51,7 +51,7 @@ const actions: any = {
     context.commit('defineScheme')
   },
   async getHistories(context: any): any {
-    const data: any[] = await state.db.plantuml.reverse().toArray().then()
+    const data: any[] = await db.plantuml.reverse().toArray().then()
     context.commit('setHistories', data)
     return data
   },

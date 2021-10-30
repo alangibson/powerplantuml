@@ -18,7 +18,7 @@
         <button type="button" class="btn btn-default" @click="renderUML" data-toggle="tooltip" data-placement="bottom" title="refresh" data-container="body">
           <span class="glyphicon glyphicon-refresh" :class="{ 'fa-spin': isLoading }"></span>
         </button>
-        <button type="button" class="btn btn-default" @click="save" data-toggle="tooltip" data-placement="bottom" title="save" data-container="body">
+        <button type="button" class="btn btn-default" @click="save" data-toggle="tooltip" data-placement="bottom" title="save to history" data-container="body">
           <span class="glyphicon glyphicon-plus"></span>
         </button>
         <a :href="src" class="btn btn-default" @click.prevent="download" data-toggle="tooltip" data-placement="bottom" title="download" data-container="body">
@@ -63,7 +63,7 @@
         >
           <span class="glyphicon glyphicon-share-alt"></span>
         </button>
-        <button type="button" class="btn btn-default" @click.prevent="toggleFullsizeUml">
+        <button type="button" class="btn btn-default" @click.prevent="toggleFullsizeUml" data-toggle="tooltip" data-placement="bottom" title="fullscreen" data-container="body">
           <span class="glyphicon glyphicon-fullscreen"></span>
         </button>
       </div>

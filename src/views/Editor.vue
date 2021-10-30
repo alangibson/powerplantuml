@@ -3,19 +3,24 @@
     <headerNavbar :enableConfluence="enableConfluence"></headerNavbar>
     <div class="container-fluid">
       <div class="row">
+        
         <div :class="[historyCol ? `col-sm-${historyCol}` : 'col-sm-2']" v-show="Boolean(historyCol)">
           <historyList :height="height"></historyList>
         </div>
-        <div class="col-editor" :class="[editorCol ? `col-sm-${editorCol}` : 'col-sm-4']" v-show="Boolean(editorCol)">
-          <editor :height="height"></editor>
-        </div>
+        
         <div :class="[cheatSheetCol ? `col-sm-${cheatSheetCol}` : 'col-sm-3']" v-show="Boolean(cheatSheetCol)">
           <cheatSheet :height="height"></cheatSheet>
         </div>
+        
+        <div :class="[editorCol ? `col-sm-${editorCol}` : 'col-sm-4']" class="col-editor" v-show="Boolean(editorCol)">
+          <editor :height="height"></editor>
+        </div>
+
         <div :class="[umlCol ? `col-sm-${umlCol}` : 'col-sm-6']" v-show="Boolean(umlCol)">
           <functionTop></functionTop>
           <uml :height="umlH"></uml>
         </div>
+
       </div>
     </div>
     <helpModal></helpModal>
@@ -144,7 +149,7 @@ export default {
           })
           .catch((error: any) => {
             // Show settings with error message
-            let httpStatus = error.response.request.status
+            let httpStatus: number = error.response.request.status
             if (httpStatus === 401) {
               // 401 = Unauthorized. Check token.
               this.$store.commit(

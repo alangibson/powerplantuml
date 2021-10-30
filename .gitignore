@@ -42,3 +42,4 @@ atlassian-connect.json
 .firebase/
 node-*-linux-x64/
 
+ngrok*

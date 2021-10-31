@@ -6,7 +6,7 @@
       %
     </div>
     <div class="form-group">
-      <label for="umlExtension">img</label>
+      <label for="umlExtension"></label>
       <select id="umlExtension" v-model="umlExtension" class="form-control">
         <option v-for="option in umlExtensions" :value="option.value" :key="option.value">
           {{ option.text }}

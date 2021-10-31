@@ -18,7 +18,7 @@ const state: any = {
   startuml: ['@startuml', '@startmindmap', '@startditaa', '@startgantt', '@startwbs'],
   enduml: ['@enduml', '@endmindmap', '@endditaa', '@endgantt', '@endwbs'],
   defaultText:
-    '# PlantUML Editor\n\n1. select template\n2. write uml diagram\n\n@startuml\n\nleft to right direction\n\nactor User\n\nUser --> (1. select template)\nUser --> (2. write uml diagram)\n\n@enduml',
+    '# PowerPlantUML\n\n1. select template\n2. write uml diagram\n\n@startuml\n\nleft to right direction\n\nactor User\n\nUser --> (1. select template)\nUser --> (2. write uml diagram)\n\n@enduml',
   text: '',
   encodedText: '',
   src: '',
@@ -138,7 +138,7 @@ const state: any = {
   defaultKeyMap: 'sublime',
   defaultIndent: 'space2',
   codemirrorIndent: 'space2',
-  umlWidth: 0,
+  umlWidth: 50,
   umlExtension: 'svg',
   umlExtensions: [
     {

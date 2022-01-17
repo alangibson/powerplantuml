@@ -1,16 +1,18 @@
 {
   "key": "power-plant-uml",
   "name": "PowerPlantUML",
-  "version": "1.0.11",
+  "version": "2.0",
   "description": "A powerful Plant UML editor",
   "vendor": {
     "name": "Alan Gibson",
     "url": "https://powerplantuml.firebaseapp.com"
   },
   "baseUrl": "$BASEURL",
+  "enableLicensing": true,
   "links": {
     "self": "${BASEURL}/atlassian-connect.json",
-    "homepage": "${BASEURL}/atlassian-connect.json"
+    "homepage": "${BASEURL}/atlassian-connect.json",
+    "documentation": "https://plantuml.com/"
   },
   "authentication": {
     "type": "none"

@@ -24,8 +24,9 @@ function extractEncodedUML (escapedUrl: string, encodedUML: string): string {
  */
 export const confluenceStaticMacro = functions.https.onRequest((request, response) => {
     const imageType = request.query['imageType']; // Required
-    const escapedUrl = request.query['url']; // Required
-    const encodedUML = request.query['encodedUML']; // Optional
+    // Cast these to string because we know they will only ever be a single string
+    const escapedUrl = <string>request.query['url']; // Required
+    const encodedUML = <string>request.query['encodedUML']; // Optional
     const encoded = extractEncodedUML(escapedUrl, encodedUML);
     let contentLanguage = request.query['language']; // Optional. Usually 'plantuml'
     if (! contentLanguage) {
@@ -33,7 +34,7 @@ export const confluenceStaticMacro = functions.https.onRequest((request, respons
     }
 
     // TODO dont hard code plantuml server. refer to confluenceImagePlaceholder instead
-    response.send(`<ac:image><ri:url ri:value="http://142.93.20.106/${imageType}/${encoded}" /></ac:image>`);
+    response.send(`<ac:image><ri:url ri:value="https://render.powerplantuml.com/${imageType}/${encoded}" /></ac:image>`);
     // response.send(`<ac:image><ri:url ri:value="/confluence/image-placeholder?imageType=${imageType}&encodedUML=${encoded}&language=${contentLanguage}" /></ac:image>`);
     
 });
@@ -44,14 +45,15 @@ export const confluenceStaticMacro = functions.https.onRequest((request, respons
 export const confluenceImagePlaceholder = functions.https.onRequest((request, response) => {
 
     const imageType = request.query['imageType']; // Required
-    const escapedUrl = request.query['url']; // Required
-    const encodedUML = request.query['encodedUML']; // Optional
-    const contentLanguage = request.query['language']; // Optional. Usually 'plantuml'
+    // Cast these to string because we know they will only ever be a single string
+    const escapedUrl = <string>request.query['url']; // Required
+    const encodedUML = <string>request.query['encodedUML']; // Optional
+    // const contentLanguage = request.query['language']; // Optional. Usually 'plantuml'
     const encoded = extractEncodedUML(escapedUrl, encodedUML);
 
     const proxy = http.request(
         {
-            hostname: '142.93.20.106',
+            hostname: 'render.powerplantuml.com',
             port: 80,
             path: `/${imageType}/${encoded}`,
             method: 'GET'

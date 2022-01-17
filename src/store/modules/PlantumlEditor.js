@@ -258,7 +258,7 @@ const mutations: any = {
 
   },
   resetUML(state: any) {
-    const uml = `${state.startuml}${state.enduml}`
+    const uml: string = `${state.startuml}${state.enduml}`
     state.text = uml
     state.encodedText = plantumlEncoder.encode(uml)
     state.src = `${state.cdn}${state.umlExtension}/${state.encodedText}.${state.umlExtension}`
@@ -362,16 +362,16 @@ const actions: any = {
     context.dispatch('renderUML', context.state.text)
   },
   getLocalStrage(context: any) {
-    context.commit('getLocalStrage')
-    context.commit('getUmlWidthFromLocalStorage')
-    context.commit('getKeyMapFromLocalStrage')
-    context.commit('getIndentFromLocalStrage')
-    context.commit('getThemeFromLocalStrage')
-    context.dispatch('syncCodeMirrorIndent', state.codemirrorIndent)
+    context.commit('getLocalStrage');
+    context.commit('getUmlWidthFromLocalStorage');
+    context.commit('getKeyMapFromLocalStrage');
+    context.commit('getIndentFromLocalStrage');
+    context.commit('getThemeFromLocalStrage');
+    context.dispatch('syncCodeMirrorIndent', state.codemirrorIndent);
   },
   syncText(context: any, text: string) {
-    context.commit('setText', text)
-    context.commit('setLocalStrage', text)
+    context.commit('setText', text);
+    context.commit('setLocalStrage', text);
   },
   setMarked() {
     const renderer: any = new marked.Renderer()
@@ -381,14 +381,14 @@ const actions: any = {
     marked.setOptions({ renderer: renderer })
   },
   renderUML(context: any, text: string) {
-    context.commit('setText', text)
-    context.commit('renderUML', text)
-    context.commit('renderMarkdown', text)
-    context.commit('setLocalStrage', text)
+    context.commit('setText', text);
+    context.commit('renderUML', text);
+    context.commit('renderMarkdown', text);
+    context.commit('setLocalStrage', text);
   },
   renderEncodedUML(context: any, encodedUML: string) {
-    let text = plantumlEncoder.decode(encodedUML)
-    context.dispatch('renderUML', text)
+    let text: string = plantumlEncoder.decode(encodedUML);
+    context.dispatch('renderUML', text);
   },
   setLanguage(context: any, language: string) {
     context.commit('setLanguage', language)

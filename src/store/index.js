@@ -16,7 +16,8 @@ import github from './modules/Github'
 import confluence from './modules/Confluence'
 
 // https://flow.org/en/docs/lang/types-first/
-export default (new Vuex.Store({
+
+const store: any = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
     plantumlEditor,
@@ -26,7 +27,9 @@ export default (new Vuex.Store({
     cheatSheet,
     gistApi,
     github,
-    confluence
+    confluence,
   },
-  plugins: [createPersistedState()]
-}))
+  plugins: [createPersistedState()],
+})
+
+export default store

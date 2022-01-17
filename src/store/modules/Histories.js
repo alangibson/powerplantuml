@@ -5,7 +5,7 @@ import lodash from 'lodash'
 const _: any = lodash
 
 // Since Dexie is a wrapper for IndexedDB, it doesnt make much sense to have it in state object.
-var db = new Dexie('PlantumlEditor')
+var db: any = new Dexie('PlantumlEditor')
 
 const state: any = {
   schemes: ['++id,text,src,created', '++id,text,encodedText,created'],

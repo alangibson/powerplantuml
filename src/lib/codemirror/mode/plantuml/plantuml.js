@@ -18,7 +18,7 @@ CodeMirror.defineSimpleMode('plantuml', {
     },
     {
       regex: /@enduml|@startuml/,
-      token: 'tag'
+      token: 'tag',
     },
     {
       regex: /\b(abstract|actor|agent|class|component|database|enum|interface|node|note|object|participant|partition|rectangle|state|static|storage|usecase)\b/,

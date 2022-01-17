@@ -1,7 +1,7 @@
 {
-  "key": "power-plant-uml",
-  "name": "PowerPlantUML",
-  "version": "2.0",
+  "key": "${MACRO_KEY}",
+  "name": "${MACRO_NAME}",
+  "version": "1.2",
   "description": "A powerful Plant UML editor",
   "vendor": {
     "name": "Alan Gibson",
@@ -24,13 +24,13 @@
   "modules": {
     "staticContentMacros": [
       {
-        "key": "power-plant-uml-macro",
+        "key": "${MACRO_KEY}-macro",
         "name": {
-          "value": "PowerPlantUML"
+          "value": "${MACRO_NAME}"
         },
         "url": "/confluence/static-macro?url={url}&encodedUML={encodedUML}&imageType={imageType}&language={language}",
         "description": {
-          "value": "PowerPlantUML Static Macro"
+          "value": "${MACRO_NAME} Static Macro"
         },
         "icon": {
           "width": 128,
@@ -121,7 +121,7 @@
           "chrome": false,
           "closeOnEscape": true
         },
-        "key": "power-plant-uml-dialog"
+        "key": "${MACRO_KEY}-dialog"
       }
     ]
   }

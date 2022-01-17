@@ -2,6 +2,7 @@ var webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
+  productionSourceMap: false,
   configureWebpack: {
     resolve: {
       alias: {

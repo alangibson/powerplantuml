@@ -1,16 +1,4 @@
-# PlantUML Editor
-
-> A Vue.js, Vuex project
-
-![PlantUML Editor](public/static/favicon-60.png)　PlantUML online demo client
-
-![PlantUML Editor](public/static/capture1_20170809.png)
-
-## Support
-
-https://powerplantuml.atlassian.net/jira/servicedesk/projects/POW
-
-support@powerplantuml.atlassian.net
+# PowerPlantUML
 
 ## Features
 
@@ -25,9 +13,36 @@ support@powerplantuml.atlassian.net
 - download image
 - print HTML
 
+## Support
+
+https://powerplantuml.atlassian.net/jira/servicedesk/projects/POW
+
+support@powerplantuml.atlassian.net
+
+## Development
+
+### Standards
+
+- All development is done on branch `atlassian-connect`
+- Branch `master` is used to pull upstream changes
+- Always bump version in `atlassian-connect.tmpl.json` before deploying
+
+### Catch up to upstream
+
+```
+git pull upstream master
+```
+
+### Merge upstream into development branch
+
+```
+git checkout atlassian-connect
+git merge master
+```
+
 ## Build Setup
 
-### Prerequisites
+### Install supported Node
 
 ```bash
 # Install nodejs 10
@@ -35,31 +50,18 @@ export NODE_RELEASE="node-v10.24.1-linux-x64"
 wget "https://nodejs.org/dist/latest-v10.x/$NODE_RELEASE.tar.gz"
 tar -xzf "$NODE_RELEASE.tar.gz"
 rm -f "$NODE_RELEASE.tar.gz"
+```
+
+## Local development
+
+```bash
 export PATH="$PWD/$NODE_RELEASE/bin:$PWD/node_modules/.bin:$PATH"
-```
 
-### Set environment
-
-```bash
 # local dev env
-export BASEURL='https://3f62d445.ngrok.io'
-export FUNCTION_BASEURL='https://3f62d445.ngrok.io'
-# test env
-npm run firebase use test
-export BASEURL='https://powerplantuml-test.firebaseapp.com'
-export FUNCTION_BASEURL='https://us-central1-powerplantuml-test.cloudfunctions.net'
-# prod env
-npm run firebase use default
-export BASEURL='https://powerplantuml.firebaseapp.com'
-export FUNCTION_BASEURL='https://us-central1-powerplantuml.cloudfunctions.net'
-
-# Generate atlassian-connect.json
-cat atlassian-connect.tmpl.json | envsubst > atlassian-connect.json
-```
-
-## Build, deploy, etc
-
-```bash
+export BASEURL='https://ppu.tunnel.memori.link'
+export FUNCTION_BASEURL='https://ppu.tunnel.memori.link'
+export MACRO_KEY="power-plant-uml-dev"
+export MACRO_NAME="PowerPlantUML Dev"
 
 # install dependencies
 npm install --also=dev
@@ -75,28 +77,57 @@ npm run test:unit
 # run e2e tests
 npm run e2e
 
-# Deploy to firebase
-# Make sure you set the right environment variables and generated atlassian-connect.json!
-npm run deploy
-```
-
-## Run locally
-
-```bash
 # If you get the error
 #   Error: ENOSPC: System limit for number of file watchers reached
 # echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
-# Run ngrok
-wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-unzip ngrok-stable-linux-amd64.zip
-./ngrok http --host-header=rewrite 8080 
+# Open tunnel
+npx localtunnel -h https://tunnel.memori.link -p 80 -s ppu
 
 # serve with hot reload at localhost:8080
 npm run dev
 ```
 
+## Integration Testing
+
+```bash
+export PATH="$PWD/$NODE_RELEASE/bin:$PWD/node_modules/.bin:$PATH"
+
+# Set environment
+npm run firebase use test
+export BASEURL='https://powerplantuml-test.firebaseapp.com'
+export FUNCTION_BASEURL='https://us-central1-powerplantuml-test.cloudfunctions.net'
+export MACRO_KEY="power-plant-uml-test"
+export MACRO_NAME="PowerPlantUML Test"
+
+# Build and deploy to Firebase
+npm run deploy
+
+# TODO side load test version on Confluence
+# - Go to https://powerplantuml.atlassian.net/wiki/plugins/servlet/upm
+# - Click Upload App button
+# - Enter https://powerplantuml-test.firebaseapp.com/atlassian-connect.json
+```
+
+## Production deployment
+
+```bash
+
+export PATH="$PWD/$NODE_RELEASE/bin:$PWD/node_modules/.bin:$PATH"
+
+npm run firebase use default
+export BASEURL='https://powerplantuml.firebaseapp.com'
+export FUNCTION_BASEURL='https://us-central1-powerplantuml.cloudfunctions.net'
+export MACRO_KEY="power-plant-uml"
+export MACRO_NAME="PowerPlantUML"
+
+# Build and deploy to Firebase
+npm run deploy
+```
+
 ## Renderer
+
+The standard PlantUML server is used for rendering. This section describes how to install and update it.
 
 ### Install
 
@@ -185,11 +216,12 @@ monit status
 
 ### Update
 
+```bash
 docker pull plantuml/plantuml-server:jetty
 docker restart powerplantuml-server
+```
 
-
-## Other
+## Credits
 
 Pen graphic by [freepik](http://www.flaticon.com/authors/freepik) from [Flaticon](http://www.flaticon.com/) is licensed under [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/). Check out the new logo that I created on [LogoMaker.com](http://logomakr.com) https://logomakr.com/7Gn1Ck
 

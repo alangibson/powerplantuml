@@ -1,6 +1,6 @@
 {
   "name": "plantuml-editor",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "flow": "flow",
@@ -8,12 +8,11 @@
     "serve": "vue-cli-service serve",
     "dev": "vue-cli-service serve",
     "build": "rm -fr dist/ && vue-cli-service build && cat atlassian-connect.tmpl.json | envsubst > atlassian-connect.json && cp atlassian-connect.json dist/",
-    "build:production": "rm -fr dist/ && gulp build && cat atlassian-connect.tmpl.json | envsubst > atlassian-connect.json && cp atlassian-connect.json dist/",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "firebase": "firebase",
     "deploy": "npm run build && npm run firebase deploy",
+    "firebase": "firebase",
     "vue-cli-service": "vue-cli-service"
   },
   "dependencies": {

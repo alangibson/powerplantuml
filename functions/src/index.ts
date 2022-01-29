@@ -12,10 +12,6 @@ function extractEncodedUMLFromURL (url) {
 function extractEncodedUML (escapedUrl: string, encodedUML: string): string {
     if ( encodedUML )
         return encodedUML;
-    // Parse encoded uml from url
-    // const path = new URL(querystring.unescape(escapedUrl)).pathname;
-    // const parts = path.split('.')[0].split('/');
-    // return parts[parts.length - 1];
     return extractEncodedUMLFromURL(querystring.unescape(escapedUrl));
 }
 
@@ -23,20 +19,28 @@ function extractEncodedUML (escapedUrl: string, encodedUML: string): string {
  * Return PlantUML image wrapped as a simple Confluence static macro.
  */
 export const confluenceStaticMacro = functions.https.onRequest((request, response) => {
-    const imageType = request.query['imageType']; // Required
+
+    let imageType = request.query['imageType']; // Required
     // Cast these to string because we know they will only ever be a single string
-    const escapedUrl = <string>request.query['url']; // Required
-    const encodedUML = <string>request.query['encodedUML']; // Optional
-    const encoded = extractEncodedUML(escapedUrl, encodedUML);
+    let escapedUrl = <string>request.query['url']; // Required
+    let encodedUML = <string>request.query['encodedUML']; // Optional
     let contentLanguage = request.query['language']; // Optional. Usually 'plantuml'
+
+    // Also support POST
+    if (request.body) {
+        imageType = request.body.imageType ? request.body.imageType : imageType;
+        escapedUrl = request.body.escapedUrl ? request.body.escapedUrl : escapedUrl;
+        encodedUML = request.body.encodedUML ? request.body.encodedUML : encodedUML;
+        contentLanguage = request.body.contentLanguage ? request.body.contentLanguage : contentLanguage;
+    }
+
     if (! contentLanguage) {
         contentLanguage = 'plantuml';
     }
+    const encoded = extractEncodedUML(escapedUrl, encodedUML);
 
     // TODO dont hard code plantuml server. refer to confluenceImagePlaceholder instead
     response.send(`<ac:image><ri:url ri:value="https://render.powerplantuml.com/${imageType}/${encoded}" /></ac:image>`);
-    // response.send(`<ac:image><ri:url ri:value="/confluence/image-placeholder?imageType=${imageType}&encodedUML=${encoded}&language=${contentLanguage}" /></ac:image>`);
-    
 });
 
 /**

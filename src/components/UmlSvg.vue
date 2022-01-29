@@ -21,11 +21,14 @@ export default {
     }
   },
   watch: {
+    // FIXME We sometimes get the PNG url and embed it in the span when switching quickly
     src: {
       immediate: true,
       handler: async function(src: string): Promise<any> {
         if (src) {
           try {
+            // eslint-disable-next-line no-console
+            console.debug(`[PowerPlantUML] Getting URL ${src}`);
             const { data }: any = await axios.get(src)
             this.$el.innerHTML = DOMPurify.sanitize(data)
           } catch (error) {

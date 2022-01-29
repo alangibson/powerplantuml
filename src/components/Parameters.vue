@@ -108,9 +108,12 @@ export default {
         return this.$store.state.plantumlEditor.umlExtension
       },
       set(value: string) {
-        this.$store.dispatch('plantumlEditor/setUmlExtension', value).then(() => {
-          this.$store.dispatch('plantumlEditor/renderUML', this.$store.state.plantumlEditor.text)
-        })
+
+        this.$store.dispatch('plantumlEditor/setUmlExtension', value)
+
+        // this.$store.dispatch('plantumlEditor/setUmlExtension', value).then(() => {
+        //   this.$store.dispatch('plantumlEditor/renderUML', this.$store.state.plantumlEditor.text)
+        // })
       }
     }
   },

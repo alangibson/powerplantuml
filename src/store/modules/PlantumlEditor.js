@@ -238,6 +238,8 @@ const mutations: any = {
     }
   },
   setUmlExtension(state: any, umlExtension: string) {
+    // eslint-disable-next-line no-console
+    console.debug(`[PowerPlantUML] Setting extension to ${umlExtension}`);
     state.umlExtension = umlExtension
   },
   setText(state: any, text: string) {
@@ -247,15 +249,21 @@ const mutations: any = {
     state.cdn = cdn
   },
   renderUML(state: any, text: string) {
+    // eslint-disable-next-line no-console
+    console.debug(`[PowerPlantUML] startuml is ${state.startuml}`)
     const start: string = findKey(state.startuml, text)
     const end: string = findKey(state.enduml, text)
-
+    // eslint-disable-next-line no-console
+    console.debug(`[PowerPlantUML] start = ${start}, end = ${end}`)
     if (start && end) {
       const uml: string = `${start}${String(text.split(start)[1]).split(end)[0] || ''}${end}`
       state.encodedText = plantumlEncoder.encode(uml)
       state.src = `${state.cdn}${state.umlExtension}/${state.encodedText}.${state.umlExtension}`
+      // eslint-disable-next-line no-console
+      console.debug(`[PowerPlantUML] Source url became ${state.src}`)
     }
-
+    // eslint-disable-next-line no-console
+    console.debug(`[PowerPlantUML] Source url is ${state.src}`)
   },
   resetUML(state: any) {
     const uml: string = `${state.startuml}${state.enduml}`
@@ -325,6 +333,12 @@ const mutations: any = {
 }
 
 function findKey(keys: string[], text: string): string {
+  // FIXME why does state.startuml become a string for some people?
+  // HACK it is somehow possible that keys can be a string of '@startuml' for some people
+  if (!Array.isArray(keys)) {
+    keys = [keys]
+  }
+
   let result: string = ''
   keys.some((key: string): boolean => {
     if (text.includes(key)) {

@@ -1,7 +1,7 @@
 {
   "key": "${MACRO_KEY}",
   "name": "${MACRO_NAME}",
-  "version": "1.2",
+  "version": "2.1",
   "description": "A powerful Plant UML editor",
   "vendor": {
     "name": "Alan Gibson",
@@ -28,6 +28,7 @@
         "name": {
           "value": "${MACRO_NAME}"
         },
+        "renderingMethod": "POST",
         "url": "/confluence/static-macro?url={url}&encodedUML={encodedUML}&imageType={imageType}&language={language}",
         "description": {
           "value": "${MACRO_NAME} Static Macro"

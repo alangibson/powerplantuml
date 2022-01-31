@@ -64,7 +64,12 @@
 </template>
 
 <script>
+/* flow */
 // import $ from 'jquery'
+/* eslint-disable flowtype/require-parameter-type */
+/* eslint-disable flowtype/require-return-type */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 
 export default {
   computed: {

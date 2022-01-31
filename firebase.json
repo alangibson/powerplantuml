@@ -12,6 +12,14 @@
         "function": "confluenceStaticMacro"
       },
       {
+        "source": "/confluence/dynamic-macro",
+        "function": "confluenceDynamicMacro"
+      },
+      {
+        "source": "/confluence/dynamic-macro-2",
+        "function": "confluenceDynamicMacro2"
+      },
+      {
         "source": "/confluence/image-placeholder",
         "function": "confluenceImagePlaceholder"
       },

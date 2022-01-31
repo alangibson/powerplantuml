@@ -94,6 +94,9 @@
 
 <script lang="js">
 /* @flow */
+/* eslint-disable flowtype-errors/show-errors */
+/* eslint-disable flowtype/require-return-type */
+/* eslint-disable vue/no-unused-components */
 
 import UmlTemplate from './UmlTemplate'
 import Github from './GithubModal'
@@ -166,7 +169,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<<<<<<< HEAD
 <style scoped>
 .navbar-inverse {
   background-color: rgb(44, 44, 44);
@@ -189,6 +191,3 @@ a.dropdown-toggle {
   color: #ffffec;
 }
 </style>
-=======
-<style scoped></style>
->>>>>>> master

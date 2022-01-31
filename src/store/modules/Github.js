@@ -1,3 +1,7 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+/* eslint-disable flowtype-errors/show-errors */
+/* eslint-disable no-undef */
 /* @flow */
 
 import GitHub from 'github-api'
@@ -6,7 +10,7 @@ function clone(o: any): any {
   return JSON.parse(JSON.stringify(o))
 }
 
-const state = {
+const state: any = {
   // GitHub authentication token
   token: null,
   // Currently selected repository owner
@@ -30,10 +34,10 @@ const state = {
   // Blob contents
   contents: null,
   // Authentication error message to be display on settings modal
-  settingsAuthenticationErrorMessage: ''
+  settingsAuthenticationErrorMessage: '',
 }
 
-const actions = {
+const actions: any = {
   //
   // Presentation and display
   //
@@ -221,10 +225,10 @@ const actions = {
 
   backTree(context: any) {
     context.commit('backHistory')
-  }
+  },
 }
 
-const mutations = {
+const mutations: any = {
   /**
    * Set authentication token
    */
@@ -273,7 +277,7 @@ const mutations = {
       branch: clone(state.branch),
       branchName: state.branchName,
       branches: clone(state.branches),
-      tree: clone(state.tree)
+      tree: clone(state.tree),
     })
   },
   backHistory(state: any) {
@@ -295,12 +299,12 @@ const mutations = {
       state.branchName = null
       state.branches = null
     }
-  }
+  },
 }
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 }

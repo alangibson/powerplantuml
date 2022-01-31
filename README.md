@@ -69,7 +69,7 @@ npm install --also=dev
 npm run flow-typed
 
 # build for production with minification
-npm run build
+npm run build:app
 
 # run unit tests
 npm run test:unit
@@ -85,7 +85,12 @@ npm run e2e
 npx localtunnel -h https://tunnel.memori.link -p 80 -s ppu
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run dev:app
+
+# Go side load test version in Confluence
+# - Go to https://powerplantuml.atlassian.net/wiki/plugins/servlet/upm
+# - Click Upload App button
+# - Enter http://ppu.tunnel.memori.link/atlassian-connect.json
 ```
 
 ## Integration Testing
@@ -103,7 +108,7 @@ export MACRO_NAME="PowerPlantUML Test"
 # Build and deploy to Firebase
 npm run deploy
 
-# TODO side load test version on Confluence
+# Go side load test version in Confluence
 # - Go to https://powerplantuml.atlassian.net/wiki/plugins/servlet/upm
 # - Click Upload App button
 # - Enter https://powerplantuml-test.firebaseapp.com/atlassian-connect.json

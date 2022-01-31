@@ -43,3 +43,8 @@ atlassian-connect.json
 node-*-linux-x64/
 
 ngrok*
+credentials.json
+.ngrok2
+ui-debug.log
+macro-body-tutorial/
+powerplantuml-test-*.json

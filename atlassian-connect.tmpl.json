@@ -15,34 +15,39 @@
     "documentation": "https://plantuml.com/"
   },
   "authentication": {
-    "type": "none"
+    "type": "jwt"
   },
-  "scopes": [
-    "read",
-    "write"
-  ],
+  "lifecycle": {
+    "installed": "/installed",
+    "uninstalled": "/uninstalled",
+    "enabled": "/enabled",
+    "disabled": "/disabled"
+  },
+  "scopes": ["read", "write"],
   "modules": {
-    "staticContentMacros": [
+    "dynamicContentMacros": [
       {
         "key": "${MACRO_KEY}-macro",
         "name": {
-          "value": "${MACRO_NAME}"
+          "value": "${MACRO_NAME} Interactive"
         },
-        "renderingMethod": "POST",
-        "url": "/confluence/static-macro?url={url}&encodedUML={encodedUML}&imageType={imageType}&language={language}",
-        "description": {
-          "value": "${MACRO_NAME} Static Macro"
-        },
-        "icon": {
-          "width": 128,
-          "height": 128,
-          "url": "/logo.png"
-        },
+        "url": "/confluence/dynamic-macro?pageId={page.id}&pageVersion={page.version}&macroId={macro.id}",
         "outputType": "block",
         "featured": true,
-        "width": "100%",
-        "bodyType": "none",
+        "bodyType": "plain-text",
+        "cacheable": false,
         "parameters": [
+          {
+            "identifier": "uml",
+            "name": {
+              "value": "UML body"
+            },
+            "description": {
+              "value": "UML code body"
+            },
+            "type": "string",
+            "required": true
+          },
           {
             "identifier": "url",
             "name": {
@@ -100,14 +105,10 @@
           "width": "100%",
           "height": "100%"
         },
-        "imagePlaceholder": {
-          "url": "/confluence/image-placeholder",
-          "applyChrome": true
-        },
-        "renderModes": {
-          "default": {
-            "url": "/confluence/static-macro?url={url}&encodedUML={encodedUML}&imageType={imageType}&language={language}"
-          }
+        "icon": {
+          "width": 128,
+          "height": 128,
+          "url": "/logo.png"
         }
       }
     ],

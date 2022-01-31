@@ -6,6 +6,8 @@
 
 <script lang="js">
 /* @flow */
+/* eslint-disable flowtype-errors/show-errors */
+/* eslint-disable flowtype/require-variable-type */
 
 import CodeMirror from 'codemirror/lib/codemirror.js'
 import { codemirror } from 'vue-codemirror'

@@ -104,6 +104,7 @@
   
     },
   
+    // NODE_ENV is always = production on Firebase
     // This is the production add-on configuration, which is enabled by setting
     // the NODE_ENV=production environment variable.
     "production": {
@@ -123,6 +124,13 @@
         "*.jira-dev.com",
         "*.atlassian.net",
         "*.jira.com"
-      ]
+      ],
+
+      "store": {
+        "adapter": "sequelize",
+        "dialect": "postgres",
+        // "url": "postgresql://postgres:yl9tNr2sB5TPBGDDkPPi@10.28.176.3/powerplantuml"
+        "url": "postgres://postgres:yl9tNr2sB5TPBGDDkPPi@34.132.144.86/powerplantuml"
+      }
     }
   }

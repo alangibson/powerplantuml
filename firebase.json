@@ -20,6 +20,10 @@
         "function": "confluenceImagePlaceholder"
       },
       {
+        "source": "/installed",
+        "function": "installed"
+      },
+      {
         "source": "/privacy.html",
         "destination": "/privacy.html"
       },

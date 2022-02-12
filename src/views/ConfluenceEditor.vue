@@ -6,7 +6,6 @@
 
 <script>
 /* eslint-disable no-console */
-
 import Editor from './Editor'
 import AP from 'atlassian-connect'
 

@@ -2,23 +2,34 @@
   "name": "functions",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
-    "build": "tsc",
+    "build": "tsc && cp config.json ./lib && cp ../atlassian-connect.json ./",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "clean": "rm -fr ./lib"
   },
   "main": "lib/index.js",
   "dependencies": {
     "atlassian-connect-express": "^7.4.9",
     "express": "^4.17.2",
     "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.2.0"
+    "firebase-functions": "^3.18.0",
+    "pg": "^8.7.3",
+    "sequelize": "6.6.2"
+  },
+  "resolutions": {
+    "@types/express": "4.17.13",
+    "@types/serve-static": "1.13.9"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/express-serve-static-core": "4.17.19",
+    "@types/serve-static": "1.13.9",
     "firebase-tools": "^7.3.2",
+    "http-proxy-middleware": "^2.0.3",
+    "sqlite3": "^5.0.2",
     "tslint": "^5.8.0",
     "typescript": "^3.6.3"
   },

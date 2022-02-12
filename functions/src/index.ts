@@ -20,30 +20,36 @@ function extractEncodedUML (escapedUrl: string, encodedUML: string): string {
 
 // Configure Express app and ACE middleware for dynamic macro
 const app = express();
+// https://developer.atlassian.com/server/hipchat/getting-started-with-atlassian-connect-express/
 const aceMiddleware = ace(app);
 app.use(aceMiddleware.middleware());
 
-export const confluenceDynamicMacroFunction = (request, response, addon) => {
+const confluenceDynamicMacroFunction = (request, response, addon) => {
+
+    functions.logger.log('confluenceDynamicMacroFunction: started');
 
     // Parse incoming request from Confluence
     const macroId = <string>request.query['macroId'];
     const pageId = <string>request.query['pageId'];
     const pageVersion = <string>request.query['pageVersion'];
 
+    functions.logger.log(`confluenceDynamicMacroFunction: macroId=${macroId} pageId=${pageId} pageVersion=${pageVersion}`);
+
     // Request macro properties
     const httpClient = addon.httpClient(request);
     const url = `/rest/api/content/${pageId}/history/${pageVersion}/macro/id/${macroId}`;
+    functions.logger.log(`confluenceDynamicMacroFunction: url=${url}`);
     httpClient.get(url, function(err, res, body) {
-        // console.log('!!!!!!!!!!', url);
-        console.log('!!!!!!!!!!', body);
-        // console.log('!!!!!!!!!!', res.statusCode);
+
+        functions.logger.log(`confluenceDynamicMacroFunction: statusCode=${res.statusCode}`);
+        functions.logger.log(`confluenceDynamicMacroFunction: body=${body}`);
 
         if (res.statusCode !== 200) {
-            console.error(res.statusCode, body);
+            functions.logger.error(res.statusCode, body);
             
             // Try again
             // setTimeout(() => {
-            //     console.log('Will try again in 1 second');
+            //     functions.logger.log('Will try again in 1 second');
             //     confluenceDynamicMacroFunction(request, response, addon);
             // }, 1000);
             // return;
@@ -71,6 +77,8 @@ export const confluenceDynamicMacroFunction = (request, response, addon) => {
             });
         request.pipe(proxy, { end: true });
     });
+
+    functions.logger.log('confluenceDynamicMacroFunction: done');
  }
 
 
@@ -118,7 +126,6 @@ export const confluenceDynamicMacro = functions.https.onRequest(app);
  * Proxy requests from Confluence for imagePlaceholder to PlantUML rendering server.
  */
 export const confluenceImagePlaceholder = functions.https.onRequest((request, response) => {
-
     const imageType = request.query['imageType']; // Required
     // Cast these to string because we know they will only ever be a single string
     const escapedUrl = <string>request.query['url']; // Required
@@ -140,3 +147,16 @@ export const confluenceImagePlaceholder = functions.https.onRequest((request, re
     
     request.pipe(proxy, { end: true });
 });
+
+
+/**
+ * Glue code. Called by Confluence when user installs app.
+ * 
+ * https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/
+ * https://developer.atlassian.com/cloud/jira/platform/user-impersonation-for-connect-apps/
+ */
+export const installed = functions.https.onRequest(app);
+// export const installed = functions.https.onRequest((request, response) => {
+//     functions.logger.log('request.path', request.path);
+//     app(request, response);
+// });

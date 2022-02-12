@@ -8,15 +8,19 @@
     "serve:app": "vue-cli-service serve",
     "serve:functions": "cd functions && npm run serve",
     "serve:addon": "npm run build && node test/app.js",
-    "build:app": "rm -fr dist/ && cat atlassian-connect.tmpl.json | envsubst > atlassian-connect.json && vue-cli-service build",
-    "build:functions": "cd ./functions && npm run build",
+    "build:app": "npm run clean:app && cat atlassian-connect.tmpl.json | envsubst > atlassian-connect.json && vue-cli-service build",
+    "build:functions": "npm run clean:functions && cd ./functions && npm run build",
     "build": "npm run build:functions && npm run build:app",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "deploy": "npm run build && npm run firebase deploy --debug",
+    "deploy": "npm run build && npm run deploy:firebase",
+    "deploy:firebase": "firebase deploy",
     "firebase": "firebase",
-    "vue-cli-service": "vue-cli-service"
+    "vue-cli-service": "vue-cli-service",
+    "clean:app": "rm -fr dist/",
+    "clean:functions": "rm -fr functions/lib/",
+    "clean": "npm run clean:app && npm run clean:functions"
   },
   "dependencies": {
     "@atlassian/aui": "^9.4.0",

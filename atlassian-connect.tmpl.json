@@ -25,9 +25,98 @@
   },
   "scopes": ["read", "write"],
   "modules": {
-    "dynamicContentMacros": [
+    "staticContentMacros": [
       {
         "key": "${MACRO_KEY}-macro",
+        "name": {
+          "value": "${MACRO_NAME}"
+        },
+        "renderingMethod": "POST",
+        "url": "/confluence/static-macro?url={url}&encodedUML={encodedUML}&imageType={imageType}&language={language}",
+        "description": {
+          "value": "${MACRO_NAME} Static Macro"
+        },
+        "icon": {
+          "width": 128,
+          "height": 128,
+          "url": "/logo.png"
+        },
+        "outputType": "block",
+        "featured": true,
+        "width": "100%",
+        "bodyType": "none",
+        "parameters": [
+          {
+            "identifier": "url",
+            "name": {
+              "value": "URL"
+            },
+            "description": {
+              "value": "PlantUML URL."
+            },
+            "type": "string",
+            "required": false
+          },
+          {
+            "identifier": "encodedUML",
+            "name": {
+              "value": "Encoded PlantUML"
+            },
+            "description": {
+              "value": "Encoded PlantUML"
+            },
+            "type": "string",
+            "required": true
+          },
+          {
+            "identifier": "imageType",
+            "name": {
+              "value": "PlantUML image type"
+            },
+            "description": {
+              "value": "PlantUML image type"
+            },
+            "type": "string",
+            "required": true
+          },
+          {
+            "identifier": "language",
+            "name": {
+              "value": "Language type"
+            },
+            "description": {
+              "value": "Language type"
+            },
+            "type": "string",
+            "required": false
+          }
+        ],
+        "editor": {
+          "url": "/confluence/editor",
+          "editTitle": {
+            "value": "Edit PowerPlant UML"
+          },
+          "insertTitle": {
+            "value": "Insert PowerPlant UML"
+          },
+          "cacheable": false,
+          "width": "100%",
+          "height": "100%"
+        },
+        "imagePlaceholder": {
+          "url": "/confluence/image-placeholder",
+          "applyChrome": true
+        },
+        "renderModes": {
+          "default": {
+            "url": "/confluence/static-macro?url={url}&encodedUML={encodedUML}&imageType={imageType}&language={language}"
+          }
+        }
+      }
+    ],
+    "dynamicContentMacros": [
+      {
+        "key": "${MACRO_KEY}-dynamic-macro",
         "name": {
           "value": "${MACRO_NAME} Interactive"
         },

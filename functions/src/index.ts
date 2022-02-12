@@ -19,9 +19,9 @@ function extractEncodedUML (escapedUrl: string, encodedUML: string): string {
 }
 
 // Configure Express app and ACE middleware for dynamic macro
-var app = express();
-var addon = ace(app);
-app.use(addon.middleware());
+const app = express();
+const aceMiddleware = ace(app);
+app.use(aceMiddleware.middleware());
 
 export const confluenceDynamicMacroFunction = (request, response, addon) => {
 
@@ -31,14 +31,14 @@ export const confluenceDynamicMacroFunction = (request, response, addon) => {
     const pageVersion = <string>request.query['pageVersion'];
 
     // Request macro properties
-    var httpClient = addon.httpClient(request);
+    const httpClient = addon.httpClient(request);
     const url = `/rest/api/content/${pageId}/history/${pageVersion}/macro/id/${macroId}`;
     httpClient.get(url, function(err, res, body) {
         // console.log('!!!!!!!!!!', url);
         console.log('!!!!!!!!!!', body);
         // console.log('!!!!!!!!!!', res.statusCode);
 
-        if (res.statusCode != 200) {
+        if (res.statusCode !== 200) {
             console.error(res.statusCode, body);
             
             // Try again
@@ -53,30 +53,30 @@ export const confluenceDynamicMacroFunction = (request, response, addon) => {
         }
 
         // Parse request
-        body = JSON.parse(body);
-        const uml = body.body;
+        const bodyParams = JSON.parse(body);
+        // const uml = bodyParams.body;
         const imageType = 'svg';
-        const escapedUrl = body.parameters.url.value;
-        const encodedUML = body.parameters.encodedUML.value;
-        // TODO pass body as first parameter
+        const escapedUrl = bodyParams.parameters.url.value;
+        const encodedUML = bodyParams.parameters.encodedUML.value;
+        // TODO pass bodyParams as first parameter
         const encoded = extractEncodedUML(escapedUrl, encodedUML);
 
         // Just embed the SVG doc
         const renderUrl = `https://render.powerplantuml.com/${imageType}/${encoded}`;
         const proxy = https.request(
             renderUrl,
-            res => {
-                response.writeHead(res.statusCode, res.headers);
-                res.pipe(response, { end: true });
+            proxyResponse => {
+                response.writeHead(proxyResponse.statusCode, proxyResponse.headers);
+                proxyResponse.pipe(response, { end: true });
             });
         request.pipe(proxy, { end: true });
     });
  }
 
 
-app.get('/confluence/dynamic-macro', addon.authenticate(), 
+app.get('/confluence/dynamic-macro', aceMiddleware.authenticate(), 
     // Pass addon global var to handler function
-    (req, res)=> confluenceDynamicMacroFunction(req, res, addon));
+    (req, res)=> confluenceDynamicMacroFunction(req, res, aceMiddleware));
 export const confluenceDynamicMacro = functions.https.onRequest(app);
 
 /**

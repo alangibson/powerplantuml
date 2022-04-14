@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist",
+    "public": "hosting/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -22,6 +22,10 @@
       {
         "source": "/installed",
         "function": "installed"
+      },
+      {
+        "source": "/uninstalled",
+        "function": "uninstalled"
       },
       {
         "source": "/privacy.html",

@@ -1,5 +1,6 @@
-import * as http from 'http';
+// import * as http from 'http';
 import * as https from 'https';
+import fetch from 'node-fetch';
 import { URL } from 'url';
 import * as querystring from 'querystring';
 import * as functions from 'firebase-functions';
@@ -46,41 +47,69 @@ const confluenceDynamicMacroFunction = (request, response, addon) => {
 
         if (res.statusCode !== 200) {
             functions.logger.error(res.statusCode, body);
-            
-            // Try again
-            // setTimeout(() => {
-            //     functions.logger.log('Will try again in 1 second');
-            //     confluenceDynamicMacroFunction(request, response, addon);
-            // }, 1000);
-            // return;
-
-            return response.writeHead(res.statusCode)
-                .end();
+            return response.send(`
+            <html>
+            <body>
+            <script src="https://connect-cdn.atl-paas.net/all.js"></script>
+            <p>
+            We could not fetch the content of your diagram.
+            </p>
+            <p>
+            If you are seeing this in preview mode, you can ignore this error. 
+            Due to a longstanding bug in the new Confluence editor,
+            it's not possible to fetch macro content immediately after saving it.
+            </p>
+            <p>
+            <b>No data has been lost.</b>
+            After publishing the page, the image will render normally.
+            </p>
+            </body>
+            </html>
+            `);
         }
 
         // Parse request
         const bodyParams = JSON.parse(body);
         // const uml = bodyParams.body;
-        const imageType = 'svg';
+        const imageType = bodyParams.parameters.imageType.value;
         const escapedUrl = bodyParams.parameters.url.value;
         const encodedUML = bodyParams.parameters.encodedUML.value;
         // TODO pass bodyParams as first parameter
+
+        // Build request to rendering server
         const encoded = extractEncodedUML(escapedUrl, encodedUML);
-
-        // Just embed the SVG doc
         const renderUrl = `https://render.powerplantuml.com/${imageType}/${encoded}`;
-        const proxy = https.request(
-            renderUrl,
-            proxyResponse => {
-                response.writeHead(proxyResponse.statusCode, proxyResponse.headers);
-                proxyResponse.pipe(response, { end: true });
-            });
-        request.pipe(proxy, { end: true });
+
+        if (imageType == 'svg') {
+            fetch(renderUrl)
+                .then((renderResponse) => {
+                    renderResponse.text()
+                        .then((svg) => {
+                            response.send(`
+                            <html>
+                            <body>
+                            <script src="https://connect-cdn.atl-paas.net/all.js"></script>
+                            ${svg}
+                            </body>
+                            </html>
+                            `);        
+                        });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else { // png, etc.
+            response.send(`
+            <html>
+            <body>
+            <script src="https://connect-cdn.atl-paas.net/all.js"></script>
+            <img src="${renderUrl}"/>
+            </body>
+            </html>
+            `);
+        }
     });
-
-    functions.logger.log('confluenceDynamicMacroFunction: done');
  }
-
 
 app.get('/confluence/dynamic-macro', aceMiddleware.authenticate(), 
     // Pass addon global var to handler function
@@ -133,10 +162,10 @@ export const confluenceImagePlaceholder = functions.https.onRequest((request, re
     // const contentLanguage = request.query['language']; // Optional. Usually 'plantuml'
     const encoded = extractEncodedUML(escapedUrl, encodedUML);
 
-    const proxy = http.request(
+    const proxy = https.request(
         {
             hostname: 'render.powerplantuml.com',
-            port: 80,
+            port: 443,
             path: `/${imageType}/${encoded}`,
             method: 'GET'
         },
@@ -156,7 +185,8 @@ export const confluenceImagePlaceholder = functions.https.onRequest((request, re
  * https://developer.atlassian.com/cloud/jira/platform/user-impersonation-for-connect-apps/
  */
 export const installed = functions.https.onRequest(app);
-// export const installed = functions.https.onRequest((request, response) => {
-//     functions.logger.log('request.path', request.path);
-//     app(request, response);
-// });
+
+/**
+ * Glue code. Called by Confluence when user uninstalls app.
+ */
+export const uninstalled = functions.https.onRequest(app);

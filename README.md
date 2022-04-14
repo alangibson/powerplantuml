@@ -45,9 +45,9 @@ git merge master
 ### Install supported Node
 
 ```bash
-# Install nodejs 10
-export NODE_RELEASE="node-v10.24.1-linux-x64"
-wget "https://nodejs.org/dist/latest-v10.x/$NODE_RELEASE.tar.gz"
+# Install nodejs 14
+export NODE_RELEASE="node-v14.19.0-linux-x64"
+wget "https://nodejs.org/dist/latest-v14.x/$NODE_RELEASE.tar.gz"
 tar -xzf "$NODE_RELEASE.tar.gz"
 rm -f "$NODE_RELEASE.tar.gz"
 ```
@@ -55,6 +55,7 @@ rm -f "$NODE_RELEASE.tar.gz"
 ## Local development
 
 ```bash
+export NODE_RELEASE="node-v14.19.0-linux-x64"
 export PATH="$PWD/$NODE_RELEASE/bin:$PWD/node_modules/.bin:$PATH"
 
 # local dev env
@@ -93,6 +94,22 @@ npm run dev:app
 # - Enter http://ppu.tunnel.memori.link/atlassian-connect.json
 ```
 
+## Local test
+
+```bash
+npm run firebase use test
+export NODE_ENV=development
+export GOOGLE_APPLICATION_CREDENTIALS="$PWD/google-cloud-credentials.json"
+export BASEURL='https://???.ngrok.io'
+export FUNCTION_BASEURL='https://us-central1-powerplantuml-test.cloudfunctions.net'
+export POSTGRES_URL="postgres://postgres:$PASSWORD@$HOSTIP/powerplantuml"
+export MACRO_KEY="power-plant-uml-test"
+export MACRO_NAME="PowerPlantUML Test"
+
+npm run build
+npm run serve
+```
+
 ## Integration Testing
 
 ```bash
@@ -100,8 +117,12 @@ export PATH="$PWD/$NODE_RELEASE/bin:$PWD/node_modules/.bin:$PATH"
 
 # Set environment
 npm run firebase use test
+export NODE_ENV=production
+export GOOGLE_APPLICATION_CREDENTIALS="$PWD/google-cloud-credentials.json"
+
 export BASEURL='https://powerplantuml-test.firebaseapp.com'
 export FUNCTION_BASEURL='https://us-central1-powerplantuml-test.cloudfunctions.net'
+export POSTGRES_URL="postgres://postgres:$PASSWORD@$HOSTIP/powerplantuml"
 export MACRO_KEY="power-plant-uml-test"
 export MACRO_NAME="PowerPlantUML Test"
 

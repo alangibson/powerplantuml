@@ -1,3 +1,10 @@
 lib/
 node_modules/
-
+config.json
+atlassian-connect.json
+credentials.json
+node-*
+*.log
+*.db
+.firebase
+google-cloud-credentials.json

@@ -2,39 +2,35 @@
   "name": "functions",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
-    "build": "tsc && cp config.json ./lib && cp ../atlassian-connect.json ./",
+    "build": "tsc && cp config.json ./lib && cp atlassian-connect.json ./lib",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "clean": "rm -fr ./lib"
+    "clean": "rm -fr ./lib",
+    "firebase": "firebase"
   },
   "main": "lib/index.js",
   "dependencies": {
     "atlassian-connect-express": "^7.4.9",
     "express": "^4.17.2",
-    "firebase-admin": "^8.6.0",
+    "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0",
+    "node-fetch": "^2",
     "pg": "^8.7.3",
     "sequelize": "6.6.2"
   },
-  "resolutions": {
-    "@types/express": "4.17.13",
-    "@types/serve-static": "1.13.9"
-  },
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/express-serve-static-core": "4.17.19",
+    "@types/express": "^4.17.12",
     "@types/serve-static": "1.13.9",
-    "firebase-tools": "^7.3.2",
-    "http-proxy-middleware": "^2.0.3",
+    "firebase-tools": "^10.2.0",
     "sqlite3": "^5.0.2",
     "tslint": "^5.8.0",
-    "typescript": "^3.6.3"
+    "typescript": "^4.5.5"
   },
   "private": true,
   "engines": {
-    "node": "10"
+    "node": "14"
   }
 }

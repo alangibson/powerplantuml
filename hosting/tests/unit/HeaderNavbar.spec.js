@@ -1,12 +1,22 @@
 import Vue from 'vue'
-import store from '@/store/index.js'
+import Vuex from 'vuex'
 import HeaderNavbar from '@/components/HeaderNavbar'
+import plantumlEditor from '@/store/modules/PlantumlEditor'
+import layout from '@/store/modules/Layout'
 
 describe('HeaderNavbar.vue', () => {
   let vm: any = null
 
   beforeEach(() => {
     const Constructor: any = Vue.extend(HeaderNavbar)
+    Vue.use(Vuex)
+    const store: any = new Vuex.Store({
+      modules: {
+        plantumlEditor,
+        layout
+      },
+    })
+
     vm = new Constructor({ store }).$mount()
   })
 

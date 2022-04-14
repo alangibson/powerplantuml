@@ -10,6 +10,10 @@
     // This is the default environment. To change your app to use
     // a different env, set NODE_ENV (http://expressjs.com/api.html#app.configure)
     "development": {
+
+      "localBaseUrl": "https://powerplantuml-test.firebaseapp.com",
+      "signed-install": "force",
+
       // This is the port your Express server will listen on
       "port": 3001,
   
@@ -47,11 +51,11 @@
       // To use sqlite with a persistent file instead of an in-memory database, the following settings can be used,
       // and will result in a store.db file being created in the working directory of the app:
       // 
-      //   "store": {
-      //     "adapter": "sequelize",
-      //     "dialect": "sqlite3",
-      //     "url": "sqlite://./store.db"
-      //   },
+      "store": {
+        "adapter": "sequelize",
+        "dialect": "sqlite3",
+        "url": "sqlite://./store.db"
+      }
       //
       // To instead configure, say, a PostgreSQL store, the following could be
       // used:
@@ -109,13 +113,12 @@
     // the NODE_ENV=production environment variable.
     "production": {
       // This is the public URL to your production add-on.
-      "localBaseUrl": "https://powerplantuml.atlassian.net",
+      "localBaseUrl": "https://powerplantuml-test.firebaseapp.com",
   
       // If your app supports multiple baseUrls,
       // additional baseUrls can be added here so that it can be used to
       // verify the `audience` claim during installation lifecycle callback.
       "allowedBaseUrls" : [
-        "https://other-domain.herokuapp.com"
       ],
   
       // Make sure that your add-on can only be registered by the hosts on
@@ -129,7 +132,6 @@
       "store": {
         "adapter": "sequelize",
         "dialect": "postgres",
-        // "url": "postgresql://postgres:yl9tNr2sB5TPBGDDkPPi@10.28.176.3/powerplantuml"
         "url": "postgres://postgres:yl9tNr2sB5TPBGDDkPPi@34.132.144.86/powerplantuml"
       }
     }

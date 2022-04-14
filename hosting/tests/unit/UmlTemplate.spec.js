@@ -1,12 +1,22 @@
 import Vue from 'vue'
-import store from '@/store/index.js'
+// import store from '@/store/index.js'
 import UmlTemplate from '@/components/UmlTemplate'
+import plantumlEditor from '@/store/modules/PlantumlEditor'
+import umlTemplate from '@/store/modules/UmlTemplate'
+import Vuex from 'vuex'
 
 describe('UmlTemplate.vue', () => {
   let vm: any = null
 
   beforeEach(() => {
     const Constructor: any = Vue.extend(UmlTemplate)
+    Vue.use(Vuex)
+    const store: any = new Vuex.Store({
+      modules: {
+        plantumlEditor,
+        umlTemplate,
+      },
+    })
     vm = new Constructor({ store }).$mount()
   })
 

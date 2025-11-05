@@ -1,0 +1,58 @@
+app:
+  id: ari:cloud:ecosystem::app/PLACEHOLDER-APP-ID
+  name: PlantUML Editor for Confluence
+
+modules:
+  confluence:macro:
+    - key: plantuml-editor-macro
+      title: PlantUML Diagram
+      description: Create and edit PlantUML diagrams directly in Confluence
+      resource: plantuml-editor
+      resolver:
+        function: resolver
+      render: native
+
+  confluence:contentBylineItem:
+    - key: plantuml-editor-byline
+      title: PlantUML Editor
+      resource: plantuml-editor
+      resolver:
+        function: resolver
+
+  confluence:globalPage:
+    - key: plantuml-editor-page
+      title: PlantUML Editor
+      resource: plantuml-editor
+      resolver:
+        function: resolver
+
+resources:
+  - key: plantuml-editor
+    path: static/plantuml-editor/build
+
+function:
+  - key: resolver
+    handler: index.handler
+
+  - key: render-diagram
+    handler: index.renderDiagram
+
+  - key: save-diagram
+    handler: index.saveDiagram
+
+permissions:
+  scopes:
+    - read:confluence-content.all
+    - write:confluence-content
+    - read:confluence-space.summary
+    - read:confluence-props
+    - write:confluence-props
+    - read:confluence-user
+  external:
+    fetch:
+      backend:
+        - 'http://www.plantuml.com'
+        - 'https://www.plantuml.com'
+
+  runtime:
+    name: nodejs18.x

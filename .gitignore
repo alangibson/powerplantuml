@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 dist/
+build/
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/
@@ -26,3 +27,10 @@ jsconfig.json
 
 # flow-typed install でインストール出来るもの
 flow-typed
+
+# Forge specific
+.forge/
+*.log
+package-lock.json
+static/plantuml-editor/build/
+static/plantuml-editor/node_modules/

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <editor :enableConfluence="true"></editor>
+    <editor :enableConfluence="true" :bannerMessage="bannerMessage"></editor>
   </div>
 </template>
 
@@ -8,11 +8,18 @@
 /* eslint-disable no-console */
 import Editor from './Editor'
 import AP from 'atlassian-connect'
+import { UNLICENSED_BANNER_MESSAGE } from '../config/banner'
 
 export default {
   name: 'confluenceEditor',
   components: {
     Editor
+  },
+  computed: {
+    bannerMessage(): string {
+      // Active licenses include trials. Unknown status must not show the banner.
+      return this.$route.query.lic === 'none' ? UNLICENSED_BANNER_MESSAGE : ''
+    }
   },
   mounted() {
     // Recover macro editor state

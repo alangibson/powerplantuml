@@ -1,6 +1,9 @@
 <template>
   <div>
     <headerNavbar :enableConfluence="enableConfluence"></headerNavbar>
+    <div v-if="enableConfluence && bannerMessage" ref="banner" class="container-fluid">
+      <div class="alert alert-info" role="status">{{ bannerMessage }}</div>
+    </div>
     <div class="container-fluid">
       <div class="row">
         
@@ -64,7 +67,12 @@ export default {
     Uml,
     Editor
   },
-  props: ['enableConfluence'],
+  props: ['enableConfluence', 'bannerMessage'],
+  watch: {
+    bannerMessage() {
+      this.$nextTick(this.setHeight)
+    }
+  },
   computed: {
     historyCol(): number {
       return this.$store.state.layout.colSize.history
@@ -178,12 +186,13 @@ export default {
     setHeight() {
       const headerHeight: number = window.$('.navbar-static-top').height()
       const functionTopHeight: number = window.$('.functionTop').height()
+      const bannerHeight: number = this.$refs.banner ? window.$(this.$refs.banner).outerHeight(true) : 0
       // Reduce height to reduce overall editor height
-      const height: number = window.innerHeight - headerHeight
+      const height: number = Math.max(0, window.innerHeight - headerHeight - bannerHeight)
       const marginTop: number = 20
       const marginBottom: number = 10
       this.height = height + 'px'
-      this.umlH = height - (marginTop + functionTopHeight + marginBottom) + 'px'
+      this.umlH = Math.max(0, height - (marginTop + functionTopHeight + marginBottom)) + 'px'
     },
     resize() {
       let timer: any = null

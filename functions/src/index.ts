@@ -3,7 +3,7 @@ import * as https from 'https';
 import fetch from 'node-fetch';
 import { URL } from 'url';
 import * as querystring from 'querystring';
-import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions/v1';
 import express from 'express';
 import ace from 'atlassian-connect-express';
 

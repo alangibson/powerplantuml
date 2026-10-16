@@ -16,9 +16,9 @@ module.exports = {
         'window.jQuery': 'jquery',
         'window.$': 'jquery'
       }),
-      new CopyWebpackPlugin([
-        { from: 'atlassian-connect.json' }
-      ])
+      new CopyWebpackPlugin({
+        patterns: [{ from: 'atlassian-connect.json' }]
+      })
     ],
     externals: {
       'atlassian-connect': 'AP'

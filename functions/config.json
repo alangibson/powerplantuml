@@ -11,7 +11,7 @@
     // a different env, set NODE_ENV (http://expressjs.com/api.html#app.configure)
     "development": {
 
-      "localBaseUrl": "https://powerplantuml-test.firebaseapp.com",
+      "localBaseUrl": "https://freeware-saturday-stay-travesti.trycloudflare.com",
       "signed-install": "force",
 
       // This is the port your Express server will listen on
@@ -113,7 +113,7 @@
     // the NODE_ENV=production environment variable.
     "production": {
       // This is the public URL to your production add-on.
-      "localBaseUrl": "https://powerplantuml-test.firebaseapp.com",
+      "localBaseUrl": "https://freeware-saturday-stay-travesti.trycloudflare.com",
   
       // If your app supports multiple baseUrls,
       // additional baseUrls can be added here so that it can be used to

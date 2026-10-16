@@ -10,7 +10,7 @@
     "build:descriptor": "cat atlassian-connect.tmpl.json | envsubst > atlassian-connect.json && cp atlassian-connect.json ./functions && cp atlassian-connect.json ./hosting",
     "build:all": "cd ./functions && npm run build && cd ../hosting && npm run build",
     "build": "npm run build:config && npm run build:descriptor && npm run build:all",
-    "deploy": "firebase deploy"
+    "deploy": "npm run build && firebase deploy"
   },
   "repository": {
     "type": "git",
@@ -23,10 +23,13 @@
   },
   "homepage": "https://github.com/alangibson/powerplantuml#readme",
   "devDependencies": {
-    "firebase-admin": "^10.0.2",
-    "firebase-tools": "^10.2.0"
+    "firebase-admin": "^14.5.0",
+    "firebase-tools": "^15.34.0"
   },
   "dependencies": {
-    "firebase-functions": "^3.18.0"
+    "firebase-functions": "^7.4.0"
+  },
+  "engines": {
+    "node": "22"
   }
 }

@@ -44,79 +44,82 @@ git merge master
 
 ### Install supported Node
 
+Use Node.js 22 for the frontend build, Firebase CLI, and Cloud Functions.
+The functions explicitly use the first-generation Firebase API.
+
 ```bash
-# Install nodejs 14
-export NODE_RELEASE="node-v14.19.0-linux-x64"
-wget "https://nodejs.org/dist/latest-v14.x/$NODE_RELEASE.tar.gz"
-tar -xzf "$NODE_RELEASE.tar.gz"
-rm -f "$NODE_RELEASE.tar.gz"
+nvm install
+nvm use
+
+# Install dependencies in all three packages
+npm ci
+(cd functions && npm ci)
+(cd hosting && npm ci)
 ```
+
+Install [`cloudflared`](https://developers.cloudflare.com/pages/how-to/preview-with-cloudflare-tunnel/).
 
 ## Local development
 
+Run commands from the repository root. For a frontend preview, start the tunnel
+in terminal 1 and leave it running:
+
 ```bash
-export NODE_RELEASE="node-v14.19.0-linux-x64"
-export PATH="$PWD/$NODE_RELEASE/bin:$PWD/node_modules/.bin:$PATH"
-
-# local dev env
-export BASEURL='https://ppu.tunnel.memori.link'
-export FUNCTION_BASEURL='https://ppu.tunnel.memori.link'
-export MACRO_KEY="power-plant-uml-dev"
-export MACRO_NAME="PowerPlantUML Dev"
-
-# install dependencies
-npm install --also=dev
-
-npm run flow-typed
-
-# build for production with minification
-npm run build:app
-
-# run unit tests
-npm run test:unit
-
-# run e2e tests
-npm run e2e
-
-# If you get the error
-#   Error: ENOSPC: System limit for number of file watchers reached
-# echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-
-# Open tunnel
-npx localtunnel -h https://tunnel.memori.link -p 80 -s ppu
-
-# serve with hot reload at localhost:8080
-npm run dev:app
-
-# Go side load test version in Confluence
-# - Go to https://powerplantuml.atlassian.net/wiki/plugins/servlet/upm
-# - Click Upload App button
-# - Enter http://ppu.tunnel.memori.link/atlassian-connect.json
+cloudflared tunnel --url http://localhost:8080 --http-host-header localhost:8080
 ```
+
+In terminal 2, paste the printed `https://...trycloudflare.com` URL:
+
+```bash
+export BASEURL='https://...trycloudflare.com'
+export MACRO_KEY=power-plant-uml-dev MACRO_NAME='PowerPlantUML Dev'
+npm run build:descriptor
+npm --prefix hosting run serve:app -- --port 8080
+```
+
+Open $BASEURL in browser to preview the editor.
 
 ## Local test
 
-```bash
-npm run firebase use test
-export NODE_ENV=development
-export GOOGLE_APPLICATION_CREDENTIALS="$PWD/google-cloud-credentials.json"
-export BASEURL='https://???.ngrok.io'
-export FUNCTION_BASEURL='https://us-central1-powerplantuml-test.cloudfunctions.net'
-export POSTGRES_URL="postgres://postgres:$PASSWORD@$HOSTIP/powerplantuml"
-export MACRO_KEY="power-plant-uml-test"
-export MACRO_NAME="PowerPlantUML Test"
+Expose Firebase Hosting and its function rewrites through one tunnel. Terminal 1:
 
+```bash
+cloudflared tunnel --url http://localhost:5000
+```
+
+Terminal 2 (use a test PostgreSQL database):
+
+```bash
+export BASEURL='https://...trycloudflare.com'
+export POSTGRES_URL="postgres://postgres:$PASSWORD@$HOSTIP/powerplantuml"
+export NODE_ENV=production
+export GOOGLE_APPLICATION_CREDENTIALS="$PWD/google-cloud-credentials.json"
+export MACRO_KEY=power-plant-uml-test 
+export MACRO_NAME='PowerPlantUML Test'
 npm run build
-npm run serve
+npm run serve -- --project powerplantuml-test --only hosting,functions
+```
+
+Note: run `npx firebase login` if you get a warning.
+
+In Confluence **Manage apps → Upload app**, enter
+`$BASEURL/atlassian-connect.json`.
+When the tunnel URL changes, rebuild, restart the emulators, and reinstall the test app.
+
+Run automated tests in another terminal:
+
+```bash
+npm --prefix hosting run test:unit -- --runInBand
+PORT=8081 npm --prefix hosting run test:e2e -- --headless
 ```
 
 ## Integration Testing
 
 ```bash
-export PATH="$PWD/$NODE_RELEASE/bin:$PWD/node_modules/.bin:$PATH"
+nvm use
 
 # Set environment
-npm run firebase use test
+npm run firebase -- use test
 export NODE_ENV=production
 export GOOGLE_APPLICATION_CREDENTIALS="$PWD/google-cloud-credentials.json"
 
@@ -139,17 +142,22 @@ npm run deploy
 
 ```bash
 
-export PATH="$PWD/$NODE_RELEASE/bin:$PWD/node_modules/.bin:$PATH"
+nvm use
 
-npm run firebase use default
+npm run firebase -- use default
 export BASEURL='https://powerplantuml.firebaseapp.com'
 export FUNCTION_BASEURL='https://us-central1-powerplantuml.cloudfunctions.net'
 export MACRO_KEY="power-plant-uml"
 export MACRO_NAME="PowerPlantUML"
+export POSTGRES_URL="postgres://postgres:$PASSWORD@$HOSTIP/powerplantuml"
 
 # Build and deploy to Firebase
 npm run deploy
 ```
+
+The root `npm run deploy` builds configuration, the descriptor, and both packages
+before deploying. Set the target environment variables above before running it.
+Firebase also lints and rebuilds the functions in its predeploy hook.
 
 ## Renderer
 
@@ -250,5 +258,4 @@ docker restart powerplantuml-server
 ## Credits
 
 Pen graphic by [freepik](http://www.flaticon.com/authors/freepik) from [Flaticon](http://www.flaticon.com/) is licensed under [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/). Check out the new logo that I created on [LogoMaker.com](http://logomakr.com) https://logomakr.com/7Gn1Ck
-
 

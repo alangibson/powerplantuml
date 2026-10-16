@@ -189,3 +189,9 @@ declare module 'dexie' {
 declare module 'codemirror/addon/fold/foldgutter.css' {
   declare module.exports: any;
 }
+
+declare module 'dompurify' {
+  declare module.exports: {
+    sanitize(dirty: string): string;
+  };
+}

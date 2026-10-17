@@ -111,7 +111,8 @@ const confluenceDynamicMacroFunction = (request, response, addon) => {
     });
  }
 
-app.get('/confluence/dynamic-macro', aceMiddleware.authenticate(), 
+// Keep the original path intact for JWT verification on both macro URLs.
+app.get(['/confluence/dynamic-macro', '/confluence/dynamic-macro_2_0_0'], aceMiddleware.authenticate(),
     // Pass addon global var to handler function
     (req, res)=> confluenceDynamicMacroFunction(req, res, aceMiddleware));
 export const confluenceDynamicMacro = functions.https.onRequest(app);

@@ -8,6 +8,18 @@
     ],
     "rewrites": [
       {
+        "source": "/confluence/static-macro_2_0_0",
+        "function": "confluenceStaticMacro"
+      },
+      {
+        "source": "/confluence/dynamic-macro_2_0_0",
+        "function": "confluenceDynamicMacro"
+      },
+      {
+        "source": "/confluence/image-placeholder_2_0_0",
+        "function": "confluenceImagePlaceholder"
+      },
+      {
         "source": "/confluence/static-macro",
         "function": "confluenceStaticMacro"
       },

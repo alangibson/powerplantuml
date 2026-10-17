@@ -17,8 +17,8 @@ export default {
   },
   computed: {
     bannerMessage(): string {
-      // Active licenses include trials. Unknown status must not show the banner.
-      return this.$route.query.lic === 'none' ? UNLICENSED_BANNER_MESSAGE : ''
+      // Active licenses include trials. Show the banner when license status is absent.
+      return this.$route.query.lic === undefined || this.$route.query.lic === 'none' ? UNLICENSED_BANNER_MESSAGE : ''
     }
   },
   mounted() {

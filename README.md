@@ -116,10 +116,6 @@ PORT=8081 npm --prefix hosting run test:e2e -- --headless
 ## Integration Testing
 
 ```bash
-nvm use
-
-# Set environment
-npm run firebase -- use test
 export NODE_ENV=production
 export GOOGLE_APPLICATION_CREDENTIALS="$PWD/google-cloud-credentials.json"
 
@@ -129,8 +125,9 @@ export POSTGRES_URL="postgres://postgres:$PASSWORD@$HOSTIP/powerplantuml"
 export MACRO_KEY="power-plant-uml-test"
 export MACRO_NAME="PowerPlantUML Test"
 
-# Build and deploy to Firebase
-npm run deploy
+# Build and deploy explicitly to test, regardless of Firebase's active/default project.
+# Environment variables above configure the app, not the deployment target.
+npm run deploy -- --project powerplantuml-test
 
 # Go side load test version in Confluence
 # - Go to https://powerplantuml.atlassian.net/wiki/plugins/servlet/upm
@@ -141,10 +138,7 @@ npm run deploy
 ## Production deployment
 
 ```bash
-
-nvm use
-
-npm run firebase -- use default
+export NODE_ENV=production
 export BASEURL='https://powerplantuml.firebaseapp.com'
 export FUNCTION_BASEURL='https://us-central1-powerplantuml.cloudfunctions.net'
 export MACRO_KEY="power-plant-uml"
@@ -154,10 +148,6 @@ export POSTGRES_URL="postgres://postgres:$PASSWORD@$HOSTIP/powerplantuml"
 # Build and deploy to Firebase
 npm run deploy
 ```
-
-The root `npm run deploy` builds configuration, the descriptor, and both packages
-before deploying. Set the target environment variables above before running it.
-Firebase also lints and rebuilds the functions in its predeploy hook.
 
 ## Renderer
 
